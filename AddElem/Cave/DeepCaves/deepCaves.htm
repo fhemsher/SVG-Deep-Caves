@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Untitled</title>
+</head>
+
+<body> 43.39,40.36
+<script>
+
+var sendXML="<SEND></SEND>"
+
+	var XMLFile = new XMLHttpRequest();
+	XMLFile.open("POST", "uggle2Emerald.asp", false);
+	XMLFile.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	XMLFile.send(sendXML);
+    alert(XMLFile.responseText)
+
+</script>
+</body>
+
+</html>

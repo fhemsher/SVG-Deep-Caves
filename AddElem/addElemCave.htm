@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Iframe Title</title>
+<meta charset=utf-8 />
+<style type="text/css">
+<!--
+body {
+-moz-box-shadow: 4px 4px 5px #888;
+-webkit-box-shadow: 4px 4px 5px #888;
+box-shadow: 4px 4px 5px #888;
+}
+
+-->
+</style>
+</head>
+<body onload=sendSize() style='padding:5px;border-radius:10px;border:2px solid lightblue;background-color:transparent;margin:0;font-family:arial'>
+<div id=containerDiv style=background:#7df9ff;>
+
+<table style='width:300px;'>
+<tr>
+<td>
+<table style='width:100%;background-color:gainsboro'>
+<tr ><td id=drawCaveTopTable style='width:90%;background-color:#7df9ff;' align=center><span id=drawCaveEditSpan>Add Caves</span></td><td align=right> <button onClick=parent.closeDrawCave()  >X</button></td></tr>
+</table>
+</td>
+
+</tr>
+
+<tr>
+<td>
+Depth:<input type="" onkeyup=drawCaveSendButton.disabled=false  id=depthValue style=width:80px /> Meters
+<br>Name/Location:<br><input onkeyup=drawCaveSendButton.disabled=false  id=nameValue type="text" style=width:260px />
+
+<br>Latitude:<input id=latValue onkeyup=drawCaveSendButton.disabled=false  type="text" style=width:200px />
+
+<br>Longitude:<input id=lngValue onkeyup=drawCaveSendButton.disabled=false  type="text" style=width:183px />
+<br>Added By:<br><input placeholder="Your email address" id=emailValue type="text" style=width:260px />
+
+
+</td>
+</tr>
+<tr align=center>
+<td>
+	<button style=visibility:hidden id=drawCaveCopyButton title='Toggle for each copy of this circle' onClick=parent.copyDrawCave()>copy</button>
+
+  <button style='background-color:red;visibility:hidden' id=drawCaveDeleteButton  onClick=parent.removeCave()>delete</button>
+
+    <button disabled id=drawCaveSendButton onClick=parent.sendDrawCave()>send</button>
+    <div id=sendCaveDiv style="color:blue;visibility:hidden"><i>This cave successfully stored in library</i></div>
+</td>
+</tr>
+
+</table>
+<span id=depthSpan style="color:red;visibility:hidden">Must be greater or equal to 100 meters</span>
+</div>
+
+
+</body>
+<script>
+
+
+
+function sendSize()
+{
+
+
+   var width=containerDiv.scrollWidth+15
+   var height=containerDiv.scrollHeight+30
+
+   parent.sizeFrame('addElemCave',width,height)
+
+    if(parent.getCookie("email"))
+   {
+       emailValue.value=parent.getCookie("email").replace(/%20/g," ")
+   }
+
+
+}
+
+
+</script>
+</html>

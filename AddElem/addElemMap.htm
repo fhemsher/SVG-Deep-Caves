@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Untitled</title>
+<style type="text/css">
+<!--
+body {
+-moz-box-shadow: 4px 4px 5px #888;
+-webkit-box-shadow: 4px 4px 5px #888;
+box-shadow: 4px 4px 5px #888;
+}
+-->
+</style>
+</head>
+
+<body onload=sendSize() style=font-family:arial>
+<div id=containerDiv style="padding:10px;background:#C3E6D3;border-radius:10px;border:1px solid purple">
+<table style=width:100%; ><tr><td style=width:90% align=center><b>Save Your Map</b></td><td align=right><button onClick=parent.closeDrawMap() >X</button></td></tr></table>
+<div style=text-align:center;font-size:90%><i>
+Your map will be stored in the Library
+</i>
+</div><br>
+
+
+
+<table class="copySource" >
+<tr>
+<td><input type="text" id=myMapTitleValue style="width:270px" placeholder="Your Map Title" /></td></tr>
+<tr> <td><input type="text" id=myMapEmailValue style="width:270px" placeholder="Your Email" /></td></tr>
+<tr> <td align=center>
+<button  id=cancelButton  onClick=parent.closeDrawMap()  >cancel</button>
+
+<button  onClick=parent.saveMyMap() id=sendButton >save</button></td></tr>
+
+<tr><td style=height:30px; ><span class="copySource"  id=sendMapMessageSpan style=color:blue></span></td></tr>
+
+</table>
+</div>
+
+</div>
+
+<script>
+function sendSize()
+{
+
+
+   var width=containerDiv.scrollWidth+30
+   var height=containerDiv.scrollHeight+30
+
+   parent.sizeFrame('addElemMap',width,height)
+   if(parent.getCookie("email"))
+   {
+       myMapEmailValue.value=parent.getCookie("email").replace(/%20/g," ")
+   }
+
+
+      // parent.startMapDraw()
+
+}
+</script>
+</body>
+
+</html>
