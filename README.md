@@ -13,6 +13,6 @@ You may then locate deep caves abd draw SVG shapes on the World Map.
 
 To preview how this application works go to: http://svg-deep-caves.com
 
-NOTE:To store your Maps in the Library, the Windows IIS must have 
+NOTE:To store your Caves & Maps in the Library, the Windows IIS must have 
 ASP files activated (See Wiki for a description how to do this).
 
