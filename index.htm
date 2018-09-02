@@ -140,7 +140,9 @@ onmousedown="return false;"
 
 <div class=noselect id=introDiv style='position:absolute;top:60px;left:10px;width:360px;background:#ABCDEF;border:1px solid blue;border-radius:15px;padding:10px;color:MIDNIGHTBLUE'>
 <center>
-<b>Create/Save/Edit Deep Cave Drawings</b><br>
+<table style=width:100%><tr><td style=90% align=center><b>Create/Save/Edit Deep Cave Drawings</b></td><td align=right><button title="Close" onclick=closeIntro()>X</button></td>
+</tr>
+</table>
 </center>
 
   <p></p>
@@ -219,7 +221,7 @@ The element's level is shown in either green or red when the cursor is over the 
              &nbsp;&nbsp;<button title="Add pattern/texture fill to elements" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddTextureButton  style=background-color:linen onClick=openAddTexture()><i>Textures</i></button>
             <button title="Add Gradients" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddGradientButton  style=background-color:linen onClick=openAddGradient()><i>Gradients</i></button>
                        &nbsp;&nbsp;&nbsp;<button onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddCaveButton  style=background-color:#7df9ff; onClick=openAddCaveDraw()>Caves</button><button onClick=openCaveHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Deep Caves"  width=20 height=20 /></button>
-              <input title="Find a Cave" onkeyup=clearCaveNext() onmouseup=clearCaveNext()  id=searchCaveValue placeholder="Name/Location Search" type="text" style='width:150px;background-color:#7df9ff;' /><button disabled onClick=findCave() id=caveFindNextButton  title="Find Cave" ><span id=findNextSpan>Find</span></button>
+              <input title="Find a Cave" onkeyup=clearCaveNext() onmouseup=clearCaveNext()  id=searchCaveValue placeholder="Cave Name Search..." type="text" style='width:150px;background-color:#7df9ff;' /><button disabled onClick=findCave() id=caveFindNextButton  title="Find Cave" ><span id=findNextSpan>Find</span></button>
 
 </div>
 </center>
@@ -284,7 +286,7 @@ Selecting <button>save</button> will store the current map view and its SVG elem
 <div style='cursor:default;border:1px solid black; border-radius:3px; padding:3px;background:yellow;position:fixed;top:5px;left:2px'><span title="Map Zoom Level" id=zoomLevelSpan></span> <span style=background:lime title="Element Zoom Level" id=elemLevelSpan></span></div>
 <div id=emDiv style=width:70%;text-align:center;background:white;position:fixed;top:97%;left:400px;></div>
 <div id=myMapTitleDiv style='visibility:hidden;font-size:110%;font-weight:bold;border:1px solid black;border-radius:8px;padding:3px;width:60%;text-align:center;background:#e0b0ff;position:fixed;top:91%;left:400px;'>My Map Title Goes Here</div>
-<div id=publishMapDiv style='border:1px solid black;padding:10px;border-radius:10px;background:gainsboro;visibility:hidden;position:fixed;top:20%;left:20%;width:50%;height:50%'>
+<div id=publishMapDiv style='border:1px solid black;padding:10px;border-radius:10px;background:gainsboro;visibility:hidden;position:fixed;top:20%;left:20%;width:50%;height:30%'>
  <table style=width:100%><tr><td align=center style='width:90%'><b>Publish Your Map</b></td><td><button onclick=publishMapDiv.style.visibility='hidden'>X</button></td></tr></table>
    <center>
     Copy the following as your web page or iframe src file:<br>
@@ -345,7 +347,13 @@ function writeEM()
 
 }
 
+function closeIntro()
+{
+ introDiv.style.height=introDiv.scrollHeight+"px"
+ d3.select("#introDiv").transition().duration(300).style("height","1px")
+setTimeout("introDiv.style.visibility='hidden'",400)
 
+}
 </script>
 
 
