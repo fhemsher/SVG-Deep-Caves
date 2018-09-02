@@ -104,7 +104,7 @@ function closeDrawCave()
 
    closeIframe("addElemCave")
    var cw=addElemCaveCw
-
+    cw.editSpan.style.visibility="hidden"   
    cw.containerDiv.style.background="#7df9ff"
    cw.drawCaveEditSpan.innerHTML="Add Caves"
    cw.drawCaveDeleteButton.style.visibility='hidden'
@@ -340,9 +340,9 @@ function setEditCave()
    var cw=addElemCaveCw
 
    cw.containerDiv.style.background="orange"
-   cw.drawCaveEditSpan.innerHTML="Edit Cave"
+   cw.drawCaveEditSpan.innerHTML="*Edit Cave"
    cw.drawCaveDeleteButton.style.visibility='visible'
-
+   cw.editSpan.style.visibility="visible"
    var name=EditThisCave.getAttribute("comment").split("@")[0]
      cw.nameValue.value=name
 
