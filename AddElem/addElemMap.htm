@@ -17,7 +17,7 @@ box-shadow: 4px 4px 5px #888;
 
 <body onload=sendSize() style=font-family:arial>
 <div id=containerDiv style="padding:10px;background:#C3E6D3;border-radius:10px;border:1px solid purple">
-<table style=width:100%; ><tr><td style=width:90% align=center><b>Save Your Map</b></td><td align=right><button onClick=parent.closeDrawMap() >X</button></td></tr></table>
+<table style=width:100%; ><tr><td style=width:90% align=center><b><span id=editAddMapSpan>Save Your Map</span></b></td><td align=right><button onClick=parent.closeDrawMap() >X</button></td></tr></table>
 <div style=text-align:center;font-size:90%><i>
 Your map will be stored in the Library
 </i>
@@ -30,7 +30,7 @@ Your map will be stored in the Library
 <td><input type="text" id=myMapTitleValue style="width:270px" placeholder="Your Map Title" /></td></tr>
 <tr> <td><input type="text" id=myMapEmailValue style="width:270px" placeholder="Your Email" /></td></tr>
 <tr> <td align=center>
-<button  id=cancelButton  onClick=parent.closeDrawMap()  >cancel</button>
+<button  id=cancelButton  onClick=parent.cancelDrawMap()  >cancel</button>
 
 <button  onClick=parent.saveMyMap() id=sendButton >save</button></td></tr>
 
@@ -39,7 +39,6 @@ Your map will be stored in the Library
 </table>
 </div>
 
-</div>
 
 <script>
 function sendSize()
@@ -54,7 +53,11 @@ function sendSize()
    {
        myMapEmailValue.value=parent.getCookie("email").replace(/%20/g," ")
    }
-
+   if(parent.EditMapId)
+         {
+            containerDiv.style.background="orange"
+             editAddMapSpan.innerHTML="Save Map Edit"
+         }
 
       // parent.startMapDraw()
 
