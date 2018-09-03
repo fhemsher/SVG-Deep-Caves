@@ -4,7 +4,7 @@
 
 <head> <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-  <title>Includes more than 2500 Deep Caves with depths greater than 100 meters shown on an interactive world map. Add new caves to the world map.</title>
+  <title>Includes more than 2500 Deep Caves with depths greater than 100 meters shown on an interactive world map. Add new caves to the world map, and draw expedition maps.</title>
   <script type="text/javascript" src="highlight.pack.js"></script>
   <link href='highlight.css' rel='stylesheet' />
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -140,19 +140,19 @@ onmousedown="return false;"
 
 <div class=noselect id=introDiv style='position:absolute;top:60px;left:10px;width:360px;background:#ABCDEF;border:1px solid blue;border-radius:15px;padding:10px;color:MIDNIGHTBLUE'>
 <center>
-<table style=width:100%><tr><td style=90% align=center><b>Create/Save/Edit Deep Cave Drawings</b></td><td align=right><button title="Close" onclick=closeIntro()>X</button></td>
+<table style=width:100%><tr><td style=90% align=center><b>Create/Save/Edit Expedition Map Drawings</b></td><td align=right><button title="Close" onclick=closeIntro()>X</button></td>
 </tr>
 </table>
 </center>
 
   <p></p>
-Draw SVG shapes  on the world map and add deep cave symbols.
-SVG shapes are: Circles, ellipses, rectangles, text, paths, arcs, polygons, symbols, icons, and images.<p></p>
+Draw your expedition map on the world map, and add deep cave symbols.
+SVG drawing shapes are: Circles, ellipses, rectangles, text, paths, arcs, polygons, symbols, icons, and images.<p></p>
 <img src="Images/introMap.png" alt="" />
 
-Also includes a  Map Library that stores your maps.
+Also includes a  Map Library that stores your expedition maps.
 <p>
-    Your maps can be <b>published</b> into any web page or iframe.
+    Your expedition maps can be <b>published</b> into any web page or iframe.
 </p>
 </div>
 
@@ -200,9 +200,9 @@ The element's level is shown in either green or red when the cursor is over the 
 
 
 <div id=selectDrawElemDiv style='width:100%;position:fixed;top:0px;left:0px;'><b><span style="font-weight:bold;color:red;font-family:times new roman">SVG</span> <span style=color:blue><i>Deep Caves</i></span></b><button onClick=openHelp() style=width:25px;height:25px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Diagrams"  width=25 height=25 /></button>
-&nbsp; &nbsp; &nbsp; &nbsp; <button onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=getMapLibraryButton  style=background-color:#C3E6D3 onClick=getMapLibrary()>Your Maps</button><button onClick=openMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
+&nbsp; &nbsp; &nbsp; &nbsp; <button title="Expedition Maps" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=getMapLibraryButton  style=background-color:#C3E6D3 onClick=getMapLibrary()>Your Maps</button><button onClick=openMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
   &nbsp;&nbsp;
- <button title="Save current map to Library" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddMapButton   style=background-color:#C3E6D3 onClick=openAddMapDraw()  ><i>Save Map</i></button><button onClick=openSaveMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
+ <button title="Save current expedition map to Library" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddMapButton   style=background-color:#C3E6D3 onClick=openAddMapDraw()  ><i>Save Map</i></button><button onClick=openSaveMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
 
 
 
@@ -229,7 +229,7 @@ The element's level is shown in either green or red when the cursor is over the 
 
 <div class=noselect  id=mapHelpLibraryDiv style='visibility:hidden;position:absolute;top:60px;left:10px;width:360px;height:1px;background:#C3E6D3;;border:1px solid blue;border-radius:15px;padding:10px;overflow:hidden'>
 <table style=width:100%><td style=width:90%; align=center><h7><b>Map Library</b></h7></td><td align=right><button onclick=closeMapHelp()>X</button></td></table>
-   <center> <i>This lists all maps saved into the library</i></center>
+   <center> <i>This lists all expedition maps saved into the library</i></center>
 
 <br>
  A typical listing:
@@ -239,7 +239,7 @@ Any map loaded can be edited.
 <p></p>
 
 
- Also You can publish the map into a web page or iframe.
+ Also You can publish the expedition map into a web page or iframe.
  selecting <button>publish</button> will provide the published web page source:
  <textarea style=overflow:hidden;width:330px;height:130px;>
  <!DOCTYPE HTML>
