@@ -279,11 +279,13 @@ Selecting <button>save</button> will store the current map view and its SVG elem
 <table style=width:100%><tr><td style=width:90% align=center><b>Map Library</b></td><td align=right></td></tr></table>
  <center><div id=mapEmptyDiv>(Map Library Empty...)</div></center>
 <table id=mapTable style=width:100% ></table>
+
+<center><button title="Close the map and begin a new map" id=startNewMapButton style=visibility:hidden onClick=startNewMap()>Start New Map</button></center>
 <button title="Close Map Library" id=mapTableCloseButton onmouseover=this.style.background="red"  onmouseout=this.style.background=""  style='visibility:hidden;position:fixed;top:70px;left:345px' onclick=closeMapTable() >X</button>
 
 </div>
 <div id=printHideDiv>
-<div style='cursor:default;border:1px solid black; border-radius:3px; padding:3px;background:yellow;position:fixed;top:5px;left:2px'><span title="Map Zoom Level" id=zoomLevelSpan></span> <span style=background:lime title="Element Zoom Level" id=elemLevelSpan></span></div>
+<div style='cursor:default;border:1px solid black; border-radius:3px; padding:3px;background:yellow;position:fixed;top:5px;left:2px'><span title="Map Zoom Level" id=zoomLevelSpan>2</span> <span style=background:lime title="Element Zoom Level" id=elemLevelSpan></span></div>
 <div id=emDiv style=width:70%;text-align:center;background:white;position:fixed;top:97%;left:400px;></div>
 <div id=myMapTitleDiv style='visibility:hidden;font-size:110%;font-weight:bold;border:1px solid black;border-radius:8px;padding:3px;width:60%;text-align:center;background:#e0b0ff;position:fixed;top:91%;left:400px;'>My Map Title Goes Here</div>
 <div id=publishMapDiv style='border:1px solid black;padding:10px;border-radius:10px;background:gainsboro;visibility:hidden;position:fixed;top:20%;left:20%;width:50%;height:30%'>
