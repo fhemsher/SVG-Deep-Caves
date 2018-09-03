@@ -27,6 +27,39 @@ var saveMap=domElemG.cloneNode(true)
     saveMap.setAttribute("boundsRect-lng",BoundsRect.attr("lng"))
     saveMap.setAttribute("boundsRect-width",BoundsRect.attr("width"))
     saveMap.setAttribute("boundsRect-height",BoundsRect.attr("height"))
+    
+    //---clear all elements---
+    for(var k=saveMap.childNodes.length-1;k>=0;k--)
+        saveMap.removeChild(saveMap.childNodes.item(k))
+
+    var bb=domWrapper.appendChild(boundsRect).getBBox()
+
+
+    mySVG.appendChild(boundsRect)
+
+    var r = mySVG.createSVGRect();
+    r.x = bb.x;
+    r.y = bb.y;
+    r.width = bb.width;
+    r.height = bb.height;
+    var nodeList = mySVG.getIntersectionList(r, null);
+    var arr = Array.from(nodeList);
+
+    for(var k=0;k<arr.length;k++)
+    {
+        var elem=arr[k]
+        var myParent=elem.parentNode
+        if(myParent.id=="domElemG")
+        {
+            var clone=elem.cloneNode(true)
+            clone.removeAttribute("onmouseover")
+            clone.removeAttribute("onmouseout")
+            clone.removeAttribute("onmousedown")
+            saveMap.appendChild(clone)
+
+        }
+
+    }
 
 
 
