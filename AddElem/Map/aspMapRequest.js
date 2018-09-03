@@ -27,7 +27,7 @@ var saveMap=domElemG.cloneNode(true)
     saveMap.setAttribute("boundsRect-lng",BoundsRect.attr("lng"))
     saveMap.setAttribute("boundsRect-width",BoundsRect.attr("width"))
     saveMap.setAttribute("boundsRect-height",BoundsRect.attr("height"))
-    
+
     //---clear all elements---
     for(var k=saveMap.childNodes.length-1;k>=0;k--)
         saveMap.removeChild(saveMap.childNodes.item(k))
@@ -124,6 +124,8 @@ function deleteMap(myId)
 
             document.getElementById("deleteMapButton"+myId).disabled=true
             document.getElementById("deleteMapButton"+myId).innerHTML="..deleted.."
+            MapDoc=null
+            setTimeout(getMapLibrary(),1500)
         }
 
     };
