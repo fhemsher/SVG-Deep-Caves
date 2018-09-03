@@ -102,6 +102,12 @@ function openAddMapDraw()
         addElemMapCw.sendMapMessageSpan.innerHTML = ""
 
         addElemMapCw.myMapTitleValue.value = ""
+         if(EditMapId)
+         {
+            addElemMapCw.containerDiv.style.background="orange"
+             addElemMapCw.editAddMapSpan.innerHTML="Save Map Edit"
+         }
+
 
 
     }
