@@ -12,6 +12,33 @@ function saveMyMap()
     sendMap()
 
 }
+function cancelDrawMap()
+{
+  if(EditMapId)
+  {
+    EditMapId=null
+    EditButton.disabled=false
+    openAddMapButton.disabled=false
+
+
+       openAddMapButton.style.background="#C3E6D3"
+       openAddMapButton.innerHTML="Save Map"
+     BoundsRect.style("visibility","visible")
+       myMapTitleDiv.style.visibility="visible"
+
+  }
+
+closeIframe("addElemMap")
+
+           MyMap.scrollWheelZoom.enable();
+    MyMap.dragging.enable()
+
+
+
+}
+
+
+
 
 function closeDrawMap()
 {
@@ -24,6 +51,8 @@ function closeDrawMap()
 
 }
 var PublishButton
+var EditButton
+
 function loadMyMap(id)
 {
 
@@ -90,7 +119,13 @@ function loadMyMap(id)
 
                      PublishButton=document.getElementById("publishMapButton"+id)
                      PublishButton.disabled=false
-                    closeMapTable()
+
+                      EditButton=document.getElementById("editMapButton"+id)
+                      EditButton.disabled=false
+
+                      startNewMapButton.style.visibility="visible"
+                      openAddMapButton.disabled=true
+                    //closeMapTable()
 
                     break
                 }
@@ -100,4 +135,34 @@ function loadMyMap(id)
 
     }
     xhr.send()
+}
+ //---clear all add elems---
+function startNewMap()
+{
+
+ for(var k=domElemG.childNodes.length-1;k>=0;k--)
+     domElemG.removeChild(domElemG.childNodes.item(k))
+  BoundsRect.style("visibility","hidden")
+ openAddMapButton.disabled=true
+ PublishButton.disabled=true
+ EditButton.disabled=true
+  startNewMapButton.style.visibility="hidden"
+  myMapTitleDiv.style.visibility="hidden"
+ PublishButton=null
+ EditButton=null
+  closeMapTable()
+}
+
+var EditMapId
+function editMap(id)
+{
+    EditMapId=id
+    EditButton.disabled=true
+    openAddMapButton.disabled=false
+      closeMapTable()
+        openAddMapButton.disabled=false
+       openAddMapButton.style.background="orange"
+       openAddMapButton.innerHTML="Save Edit"
+     BoundsRect.style("visibility","hidden")
+       myMapTitleDiv.style.visibility="hidden"
 }

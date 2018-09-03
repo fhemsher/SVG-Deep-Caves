@@ -48,23 +48,28 @@ function getMapLibrary()
                         var titleCell = row.insertCell(0)
                         titleCell.style.width="77%"
                         titleCell.innerHTML = "<a href=javascript:loadMyMap('"+id+"')>"+title +"</a>"
-                     var publishCell= row.insertCell(1).innerHTML = "<button disabled id=publishMapButton"+id+"  title='Publish this map into a web page' onClick=publishMap('"+id+"')  >publish</button>"
+                         if(email==CookieEmail)
+                        var editCell= row.insertCell(1).innerHTML = "<button disabled style='background:orange' id=editMapButton"+id+"  title='Edit this Map' onClick=editMap('"+id+"')  >edit</button>"
+                        var publishCell= row.insertCell(2).innerHTML = "<button disabled id=publishMapButton"+id+"  title='Publish this map into a web page' onClick=publishMap('"+id+"')  >publish</button>"
                         if(email==CookieEmail)
-                            var deleteCell= row.insertCell(2).innerHTML = "<button id=deleteMapButton"+id+" onClick=deleteMap('"+id+"') style=background:red >delete</button>"
+                            var deleteCell= row.insertCell(3).innerHTML = "<button title='Remove this map from the Library' id=deleteMapButton"+id+" onClick=deleteMap('"+id+"') style=background:red >delete</button>"
 
                     }
 
                 }
-                mapTableCloseButton.style.visibility = "visible"
-                LoadedMapArray =[]
-                mapTableDiv.style.top = "60px"
-                mapTableDiv.style.visibility = "visible"
-               var height = 540
-                d3.select("#mapTableDiv").transition().duration(800).style("height", height+"px")
-                mapTableDiv.style.visibility = "visible"
 
-                getMapLibraryButton.style.borderStyle = "inset"
+                if(!EditMapId)
+                {
+                    mapTableCloseButton.style.visibility = "visible"
+                    LoadedMapArray =[]
+                    mapTableDiv.style.top = "60px"
+                    mapTableDiv.style.visibility = "visible"
+                   var height = 540
+                    d3.select("#mapTableDiv").transition().duration(800).style("height", height+"px")
+                    mapTableDiv.style.visibility = "visible"
 
+                    getMapLibraryButton.style.borderStyle = "inset"
+               }
 
         }
         xhr.send()
@@ -160,6 +165,8 @@ function closeMapTable()
     mapTableCloseButton.style.visibility = "hidden"
     getMapLibraryButton.style.borderStyle = ""
     enableAllButtons()
+    if(PublishButton)
+    openAddMapButton.disabled=true
 }
 
 var InsertMap

@@ -34,38 +34,45 @@ var saveMap=domElemG.cloneNode(true)
     saveMap.insertBefore(defsPattern.cloneNode("true"),saveMap.firstChild)
     saveMap.insertBefore(arrowDefs.cloneNode("true"),saveMap.firstChild)
 
-    var utcMS = new Date().getTime()
-    saveMap.setAttribute("utcMS", utcMS)
-    var myId = "map"+utcMS
-    saveMap.setAttribute("id", myId)
 
-
-
-
-
-
-    LoadedMapArray.push(saveMap)
-    var svgString = new XMLSerializer().serializeToString(saveMap)
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "_ASP/sendMap.asp", true);
-    xhr.onload = function()
+    if(!EditMapId)
     {
-        if (this.status == 200)
+        var utcMS = new Date().getTime()
+        saveMap.setAttribute("utcMS", utcMS)
+        var myId = "map"+utcMS
+        saveMap.setAttribute("id", myId)
+
+        LoadedMapArray.push(saveMap)
+        var svgString = new XMLSerializer().serializeToString(saveMap)
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "_ASP/sendMap.asp", true);
+        xhr.onload = function()
         {
-            setTimeout("publishCaveInit('"+title+"','"+myId+"')",2000)
-            cw.sendMapMessageSpan.innerHTML = "Thanks, your map has been received and placed in the library."
-            //cw.refreshMapLibraryButton.disabled = false
-            cw.sendButton.disabled = true
-        }
-       if (this.status == 500)
-        { //---Error---
-            console.log(this.responseText) //---HTML-formatted error description---
+            if (this.status == 200)
+            {
+                setTimeout("publishCaveInit('"+title+"','"+myId+"')",2000)
+                cw.sendMapMessageSpan.innerHTML = "Thanks, your map has been received and placed in the library."
+                //cw.refreshMapLibraryButton.disabled = false
+                cw.sendButton.disabled = true
+            }
+           if (this.status == 500)
+            { //---Error---
+                console.log(this.responseText) //---HTML-formatted error description---
 
-        }
-    };
+            }
+        };
 
-    xhr.send(svgString);
+        xhr.send(svgString);
+     }
+     else
+     {
+       saveMap.setAttribute("id", EditMapId)
+       deleteEditMap(EditMapId,saveMap)
+
+
+     }
+
 }
 
 function deleteMap(myId)
@@ -82,7 +89,6 @@ function deleteMap(myId)
         if (this.status == 200)
         {
 
-
             document.getElementById("deleteMapButton"+myId).disabled=true
             document.getElementById("deleteMapButton"+myId).innerHTML="..deleted.."
         }
@@ -92,6 +98,61 @@ function deleteMap(myId)
     xhr.send(svgString);
 
 }
+
+//--remove existing map, replace with edited---
+function deleteEditMap(myId,saveMap)
+{
+    var svgRemoveString = "<remove myId='"+myId+"' />"
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "_ASP/removeMap.asp", true);
+    xhr.onload = function()
+    {
+        if (this.status == 200)    //---insert replacement(edited) map
+        {
+           var svgEditString = new XMLSerializer().serializeToString(saveMap)
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "_ASP/sendMap.asp", true);
+            xhr.onload = function()
+            {
+                if (this.status == 200)
+                {  var title = cw.myMapTitleValue.value
+                    setTimeout("publishCaveInit('"+title+"','"+myId+"')",2000)
+                    cw.sendMapMessageSpan.innerHTML = "Your map has been edited in the library."
+                      cw.sendButton.disabled = true
+
+
+                    EditButton.disabled=false
+                    openAddMapButton.disabled=false
+                    PublishButton=null
+                    EditButton=null
+
+                       openAddMapButton.style.background="#C3E6D3"
+                       openAddMapButton.innerHTML="Save Map"
+                     BoundsRect.style("visibility","visible")
+                       myMapTitleDiv.style.visibility="visible"
+                       //update table---
+                     MapDoc=null
+                     getMapLibrary()
+                     EditMapId=null
+                }
+               if (this.status == 500)
+                { //---Error---
+                    console.log(this.responseText) //---HTML-formatted error description---
+
+                }
+            };
+
+            xhr.send(svgEditString);
+        }
+
+    };
+
+    xhr.send(svgRemoveString);
+
+}
+
 
 function sendUpdateMap()
 {
