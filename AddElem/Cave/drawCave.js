@@ -104,7 +104,7 @@ function closeDrawCave()
 
    closeIframe("addElemCave")
    var cw=addElemCaveCw
-    cw.editSpan.style.visibility="hidden"   
+    cw.editSpan.style.visibility="hidden"
    cw.containerDiv.style.background="#7df9ff"
    cw.drawCaveEditSpan.innerHTML="Add Caves"
    cw.drawCaveDeleteButton.style.visibility='hidden'
@@ -427,8 +427,11 @@ function editThisCave()
                            clone.setAttribute("lng",lng)
                            clone.setAttribute("createdBy",email)
                           clone.setAttribute("id",DrawCaveEditId)
+                             var update=new Date().toUTCString();
 
-                           var comment=name+" @ "+depth+" m"
+                         clone.setAttribute("update",update)
+
+                            var comment=name+" @ "+depth+" m"
                            clone.setAttribute("comment",comment)
 
                             clone.setAttribute("onmouseover","showCaveComment(evt)")
