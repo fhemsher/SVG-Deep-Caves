@@ -84,7 +84,7 @@ var saveMap=domElemG.cloneNode(true)
         {
             if (this.status == 200)
             {
-                setTimeout("publishCaveInit('"+title+"','"+myId+"')",2000)
+
                 cw.sendMapMessageSpan.innerHTML = "Thanks, your map has been received and placed in the library."
                 //cw.refreshMapLibraryButton.disabled = false
                 cw.sendButton.disabled = true
@@ -152,8 +152,8 @@ function deleteEditMap(myId,saveMap)
             xhr.onload = function()
             {
                 if (this.status == 200)
-                {  var title = cw.myMapTitleValue.value
-                    setTimeout("publishCaveInit('"+title+"','"+myId+"')",2000)
+                {  
+
                     cw.sendMapMessageSpan.innerHTML = "Your map has been edited in the library."
                       cw.sendButton.disabled = true
 
