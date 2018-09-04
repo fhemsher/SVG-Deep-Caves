@@ -55,6 +55,7 @@ var saveMap=domElemG.cloneNode(true)
             clone.removeAttribute("onmouseover")
             clone.removeAttribute("onmouseout")
             clone.removeAttribute("onmousedown")
+            clone.setAttribute("pointer-events","none")
             saveMap.appendChild(clone)
 
         }
@@ -152,7 +153,7 @@ function deleteEditMap(myId,saveMap)
             xhr.onload = function()
             {
                 if (this.status == 200)
-                {  
+                {
 
                     cw.sendMapMessageSpan.innerHTML = "Your map has been edited in the library."
                       cw.sendButton.disabled = true
