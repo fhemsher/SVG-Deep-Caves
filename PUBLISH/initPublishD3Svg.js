@@ -17,6 +17,7 @@ function initD3Svg()
 	MyMap._initPathRoot()
     MySVG =d3.select("#MyMap").select("svg")
     MySVG.attr("id","mySVG")
+    MySVG.style("cursor","default")
 
 
     var defs = MySVG.append("defs")
