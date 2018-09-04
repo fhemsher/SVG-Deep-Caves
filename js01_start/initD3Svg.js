@@ -316,9 +316,13 @@ feMerge.append("feMergeNode")
     .attr("stroke-width","2")
     .attr("stroke-dasharray","15 3")
 
-
-
-    //setTimeout(getGeoLoc,4000)
+     MySVG.append("circle")
+     .attr("id","tracker")
+    .attr("pointer-events","none")
+    .attr("r","1")
+    .attr("cx","0")
+    .attr("cy","0")
+    .style("visibility","hidden")
 
 
 
