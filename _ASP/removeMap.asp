@@ -19,7 +19,7 @@
        if(id==myId)
        {
          docSVG.removeChild(svg)
-          Response.Write("OK")
+        
             updateMapSVG.save(svgMap)
           break;
 
@@ -29,6 +29,29 @@
 
     }
 
+    var publishCaveId="cavePublish"+myId.split("map")[1]
+    var updateMapSVG = Server.CreateObject("Msxml2.DOMDocument.6.0");
+    var svgFile='../LIBRARY/CavePublish.svg'
+    var svgMap=Server.MapPath(svgFile)
+    updateMapSVG.load(svgMap)
+
+    var docSVG=updateMapSVG.documentElement
+    for(var k=0;k<docSVG.childNodes.length;k++)
+    {
+       var svg=docSVG.childNodes.item(k)
+       var id=svg.getAttribute("id")
+       if(id==publishCaveId)
+       {
+         docSVG.removeChild(svg)
+          Response.Write("OK")
+            updateMapSVG.save(svgMap)
+          break;
+
+
+       }
+
+
+    }
 
 
 
