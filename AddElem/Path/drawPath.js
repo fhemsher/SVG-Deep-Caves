@@ -55,8 +55,11 @@ function trackDrawPath()
         var az= points2degAz(SegSetX,SegSetY,SVGx,SVGy).toFixed(3)
 
          commentDiv.innerHTML="Surface: "+numberWithCommas(PreviousLL.distanceTo(SVGLatLng).toFixed(0))+"m<br>Transit: "+az+" &deg;<br> Magnetic: "+myBearing+" &deg;"
-         commentDiv.style.left=NextX+10+"px"
-         commentDiv.style.top=NextY+30+"px"
+
+        tracker.setAttribute("transform","translate("+(NextX+10)+" "+(NextY+30)+")")
+        var scrCTM=tracker.getScreenCTM()
+         commentDiv.style.left=scrCTM.e+"px"
+         commentDiv.style.top=scrCTM.f+"px"
          commentDiv.style.visibility="visible"
 
         }
