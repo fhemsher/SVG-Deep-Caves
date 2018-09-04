@@ -4,7 +4,9 @@ function saveMyMap()
    setMapBounds()
    cw=addElemMapCw
    var title=cw.myMapTitleValue.value
-   myMapTitleDiv.innerHTML=title
+   var createdBy="<br><span style=font-size:90%;font-weight:normal >Created By: "+cw.myMapEmailValue.value+"</span>"
+
+   myMapTitleDiv.innerHTML=title+createdBy
    myMapTitleDiv.style.visibility="visible"
 
     MyMap.scrollWheelZoom.enable();
@@ -91,8 +93,8 @@ function loadMyMap(id)
 
                     elemG.id="domElemG"
                     mySVG.insertBefore(elemG,domWrapper)
-
-                    myMapTitleDiv.innerHTML=elemG.getAttribute("title")
+   var createdBy="<br><span style=font-size:90%;font-weight:normal >Created By: "+elemG.getAttribute("email")+"</span>"
+                    myMapTitleDiv.innerHTML=elemG.getAttribute("title")+createdBy
                     myMapTitleDiv.style.visibility="visible"
                     var ulLat=+elemG.getAttribute("MyMapLatUL")
                     var ulLng=+elemG.getAttribute("MyMapLngUL")
