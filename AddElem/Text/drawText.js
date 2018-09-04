@@ -147,7 +147,8 @@ function startTextDraw()
     TSpanON = true;
     InsertSpanON = false
     WriteText = "";
-
+      MyMap.scrollWheelZoom.disable();
+       MyMap.dragging.disable()
     DrawTextStarted = true
     DrawX.attr("stroke", "violet")
            mySVG.setAttribute("cursor","default")
@@ -230,6 +231,8 @@ function drawTextItalicChecked()
 var TextElem //--g child node---
 function placeDrawText()
 {
+         MyMap.scrollWheelZoom.disable();
+       MyMap.dragging.disable()
 
     var cw = addElemTextCw
 
