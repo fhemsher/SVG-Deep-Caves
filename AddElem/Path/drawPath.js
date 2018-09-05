@@ -51,17 +51,31 @@ function trackDrawPath()
         {
             rubberLine.setAttribute("x2", NextX)
             rubberLine.setAttribute("y2", NextY)
-        var myBearing=bearing(MapLatLngClick.lat,MapLatLngClick.lng,SVGLatLng.lat,SVGLatLng.lng)
-        var az= points2degAz(SegSetX,SegSetY,SVGx,SVGy).toFixed(3)
+              var az= points2degAz(SegSetX,SegSetY,SVGx,SVGy)
+              var declination=""
+         if(cw.magneticCheck.checked)
+         {
+            var date=new Date()
+            var year=date.getFullYear()
+            var month=date.getMonth()+1
+            var fractionYear=month/12
+            var yr=year+fractionYear
+            console.log(yr)
+            var elev=+cw.magneticElevationValue.value
+            var wmm = new WorldMagneticModel();
+            var dec = wmm.declination(0.0, SVGLat, SVGLng, yr);
 
-         commentDiv.innerHTML="Surface: "+numberWithCommas(PreviousLL.distanceTo(SVGLatLng).toFixed(0))+"m<br>Transit: "+az+" &deg;<br> Magnetic: "+myBearing+" &deg;"
+             declination="<br> Compass: "+(dec+az).toFixed(3)  +" &deg;"
 
-        tracker.setAttribute("transform","translate("+(NextX+10)+" "+(NextY+30)+")")
-        var scrCTM=tracker.getScreenCTM()
-         commentDiv.style.left=scrCTM.e+"px"
-         commentDiv.style.top=scrCTM.f+"px"
-         commentDiv.style.visibility="visible"
+         }
 
+
+         commentDiv.innerHTML="Surface: "+numberWithCommas(PreviousLL.distanceTo(SVGLatLng).toFixed(0))+"m<br>Direction: "+az.toFixed(3)  +" &deg;"+declination
+            tracker.setAttribute("transform","translate("+(NextX+10)+" "+(NextY+30)+")")
+            var scrCTM=tracker.getScreenCTM()
+            commentDiv.style.left=scrCTM.e+"px"
+            commentDiv.style.top=scrCTM.f+"px"
+            commentDiv.style.visibility="visible"
         }
 
         SegNextX = NextX
@@ -124,7 +138,7 @@ function placeDrawPath()
     .attr("stroke-width", strokeWidth)
     .attr("stroke-opacity", opacityStroke)
     .style("cursor", "default")
-     .attr("InitZoom", MapZoom)    
+     .attr("InitZoom", MapZoom)
     var firstX
     var firstY
 
