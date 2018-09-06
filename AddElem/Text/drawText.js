@@ -519,43 +519,41 @@ function finishDrawText()
             {
                 var cw = addElemTextCw
                 activeElem.removeAttribute("class")
+                    var id = "text"+new Date().getTime()
+               var finishedElem = document.getElementById("activeElem").firstChild.cloneNode(true)
+                finishedElem.setAttribute("id", id)
+                finishedElem.setAttribute("font-family", ActiveElem.attr("font-family"))
+                finishedElem.setAttribute("font-size", ActiveElem.attr("font-size"))
+                finishedElem.setAttribute("font-weight", ActiveElem.attr("font-weight"))
+                finishedElem.setAttribute("font-style", ActiveElem.attr("font-style"))
+                finishedElem.setAttribute("stroke", ActiveElem.attr("stroke"))
+                finishedElem.setAttribute("stroke-width", ActiveElem.attr("stroke-width"))
+                finishedElem.setAttribute("fill", ActiveElem.attr("fill"))
+                finishedElem.setAttribute("transform", ActiveElem.attr("transform"))
+                finishedElem.setAttribute("filter", ActiveElem.attr("filter"))
 
-                var finishedElem = ElemG.append('text')
-                var id = "text"+new Date().getTime()
-                finishedElem.attr("id", id)
-                finishedElem.attr("font-family", ActiveElem.attr("font-family"))
-                finishedElem.attr("font-size", ActiveElem.attr("font-size"))
-                finishedElem.attr("font-weight", ActiveElem.attr("font-weight"))
-                finishedElem.attr("font-style", ActiveElem.attr("font-style"))
-                finishedElem.attr("stroke", ActiveElem.attr("stroke"))
-                finishedElem.attr("stroke-width", ActiveElem.attr("stroke-width"))
-                finishedElem.attr("fill", ActiveElem.attr("fill"))
-                finishedElem.attr("transform", ActiveElem.attr("transform"))
-                finishedElem.attr("filter", ActiveElem.attr("filter"))
+                finishedElem.setAttribute("onmousedown", "editTextDraw("+id+",evt)")
 
-                finishedElem.attr("onmousedown", "editTextDraw("+id+",evt)")
+                finishedElem.setAttribute("style","cursor:default")
 
-                finishedElem.style("cursor", "default")
-                finishedElem.style("visibility", null)
-                finishedElem.text(WriteText)
+                finishedElem.textContent=WriteText
 
                 //---is this text rotated?---
                 var ctm = activeElem.getCTM()
                 RAD2DEG = 180 / Math.PI;
                 var rotatedDeg = Math.atan2(ctm.b, ctm.a) * RAD2DEG;
 
-                finishedElem.attr("rotateAngle", rotatedDeg)
+                finishedElem.setAttribute("rotateAngle", rotatedDeg)
 
-                finishedElem.attr("class", "textElem")
+                finishedElem.setAttribute("class", "textElem")
 
                 mySVG.setAttribute('onclick', "placeDrawText()") //---click to add more icons for this session---
                 DrawX.style("display", "none")
-            finishedElem.attr("onmouseover", "myZoomLevel("+MapZoom+","+id+")")
-            finishedElem.attr("onmouseout", "removeZoomLevel()")
-            finishedElem.attr("InitZoom", MapZoom)
-
-
-          setLatLng(document.getElementById(id)) //---helperFuncts.js---
+            finishedElem.setAttribute("onmouseover", "myZoomLevel("+MapZoom+","+id+")")
+            finishedElem.setAttribute("onmouseout", "removeZoomLevel()")
+            finishedElem.setAttribute("InitZoom", MapZoom)
+            domElemG.appendChild(finishedElem)
+          setLatLng(finishedElem) //---helperFuncts.js---
            MyMap.dragging.enable()
            MyMap.scrollWheelZoom.enable();
 
