@@ -1,5 +1,5 @@
 # SVG-Deep-Caves
-Windows 10 Stand-Alone Application: Locate Deep Caves &amp; Draw SVG Shapes on World Map
+Windows 10 Stand-Alone Application: Locate Deep Caves &amp; Draw Expedition maps
 
 ![](http://svg-deep-caves.com/Images/introMap.png)
 
