@@ -2,6 +2,7 @@
 var MapLatLngClick
 function trackDrawPath()
 {
+
     var cw = addElemPathCw
 
     if
@@ -39,7 +40,7 @@ function trackDrawPath()
                 var lastY = lastSeg.y
 
                 //---rightAngle---
-                if(cw.drawPathRightAngleCheck.checked==true)
+            if(cw.drawPathRightAngleCheck.checked==true)
             {
                 var xDiff = Math.abs(lastX-SVGx);
                 var yDiff = Math.abs(lastY-SVGy);
@@ -53,20 +54,19 @@ function trackDrawPath()
             rubberLine.setAttribute("y2", NextY)
               var az= points2degAz(SegSetX,SegSetY,SVGx,SVGy)
               var declination=""
+
          if(cw.magneticCheck.checked)
-         {
+         {  var wmm = new WorldMagneticModel();
             var date=new Date()
             var year=date.getFullYear()
             var month=date.getMonth()+1
             var fractionYear=month/12
             var yr=year+fractionYear
-            console.log(yr)
-            var elev=+cw.magneticElevationValue.value
-            var wmm = new WorldMagneticModel();
-            var dec = wmm.declination(0.0, SVGLat, SVGLng, yr);
 
-             declination="<br> Compass: "+(dec+az).toFixed(3)  +" &deg;"
+            var elev=cw.magneticElevationValue.value
 
+             var dec = wmm.declination(elev, SVGLat, SVGLng, yr);
+             declination="<br> Compass: "+(dec+az).toFixed(3)+" &deg;"
          }
 
 
@@ -111,6 +111,31 @@ function startPathDraw()
 
     var cw = addElemPathCw
     cw.pathZoneMarkerDiv.style.visibility = "hidden"
+     //---set elevation---
+     if(cw.magneticElevationValue.value=="0")
+     {
+                  var input = {
+                "lat": "\""+SVGLat+"\"",
+                "lon": "\""+SVGLng+"\""
+            };
+            Algorithmia.client("simrY8EQfChUiT7IMoPndVyyGQj1")
+                .algo("Gaploid/Elevation/0.3.6")
+                .pipe(input)
+                .then(function(output)
+                {    console.log(output)   
+                    if(output.error)
+                    {
+                        cw.magneticElevationValue.value="0"
+                        console.log(output.error);
+                    }
+                    else if(output.elev)
+                    {
+
+                        cw.magneticElevationValue.value=output.elev
+                        console.log(output.elev);
+                    }
+                });
+      }
 }
 //---click on svg layer---
 var ActivePoint
@@ -217,6 +242,31 @@ function placeDrawPath()
 
         cw.drawPathPauseButton.disabled = false
         cw.drawPathCancelButton.disabled = false
+     if(cw.magneticElevationValue.value=="0")
+     {
+                  var input = {
+                "lat": "\""+SVGLat+"\"",
+                "lon": "\""+SVGLng+"\""
+            };
+            Algorithmia.client("simrY8EQfChUiT7IMoPndVyyGQj1")
+                .algo("Gaploid/Elevation/0.3.6")
+                .pipe(input)
+                .then(function(output)
+                {   console.log(output)
+                    if(output.error)
+                    {
+                        cw.magneticElevationValue.value="0"
+                        console.log(output.error);
+                    }
+                    else if(output.elev)
+                    {
+                        //if(output.result!="Error status code: 500")
+                        cw.magneticElevationValue.value=output.elev
+                        console.log(output.elev);
+                    }
+                });
+      }
+
 
         DrawPath = true
 }

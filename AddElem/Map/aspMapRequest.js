@@ -10,6 +10,7 @@ function sendMap()
    setCookie("email",email,720)
 var saveMap=domElemG.cloneNode(true)
 
+
      saveMap.setAttribute("email", email)
     saveMap.setAttribute("title", title)
     saveMap.setAttribute("MyMapZoom", MyMapZoom)
@@ -32,10 +33,9 @@ var saveMap=domElemG.cloneNode(true)
     for(var k=saveMap.childNodes.length-1;k>=0;k--)
         saveMap.removeChild(saveMap.childNodes.item(k))
 
-    var bb=domWrapper.appendChild(boundsRect).getBBox()
 
 
-    mySVG.appendChild(boundsRect)
+    var bb=boundsRect.getBBox()
 
     var r = mySVG.createSVGRect();
     r.x = bb.x;
@@ -44,21 +44,41 @@ var saveMap=domElemG.cloneNode(true)
     r.height = bb.height;
     var nodeList = mySVG.getIntersectionList(r, null);
     var arr = Array.from(nodeList);
-
     for(var k=0;k<arr.length;k++)
     {
         var elem=arr[k]
         var myParent=elem.parentNode
+
         if(myParent.id=="domElemG")
         {
             var clone=elem.cloneNode(true)
+            clone.removeAttribute("onmousedown")
             clone.removeAttribute("onmouseover")
             clone.removeAttribute("onmouseout")
-            clone.removeAttribute("onmousedown")
             clone.setAttribute("pointer-events","none")
+
+
+            if(EditMapId)
+            {
+                 var utcMS = new Date().getTime()
+                saveMap.setAttribute("editTimeUtcMS", utcMS)
+             }
+
+
             saveMap.appendChild(clone)
 
         }
+
+        if(elem.parentNode.getAttribute("class")=="caveElem")
+        {
+            var clone=elem.parentNode.cloneNode(true)
+
+            clone.removeAttribute("onmousedown")
+            saveMap.appendChild(clone)
+
+        }
+
+
 
     }
 
@@ -67,16 +87,34 @@ var saveMap=domElemG.cloneNode(true)
     saveMap.insertBefore(defsGradient.cloneNode("true"),saveMap.firstChild)
     saveMap.insertBefore(defsPattern.cloneNode("true"),saveMap.firstChild)
     saveMap.insertBefore(arrowDefs.cloneNode("true"),saveMap.firstChild)
+    //---hide not in map---
+    for(var k=0;k<domElemG.childNodes.length;k++)
+     domElemG.childNodes.item(k).setAttribute("display","none")
+    for(var k=0;k<domCaveG.childNodes.length;k++)
+     domCaveG.childNodes.item(k).setAttribute("display","none")
 
 
-    if(!EditMapId)
+    for(var k=0;k<saveMap.childNodes.length;k++)
     {
+        var elem=saveMap.childNodes.item(k)
+        var saveId=elem.id
+        var savedElem=document.getElementById(saveId)
+        savedElem.removeAttribute("display")
+            savedElem.removeAttribute("onmousedown")
+            savedElem.removeAttribute("onmouseover")
+            savedElem.removeAttribute("onmouseout")
+
+
+    }
+
+
+
         var utcMS = new Date().getTime()
         saveMap.setAttribute("utcMS", utcMS)
         var myId = "map"+utcMS
         saveMap.setAttribute("id", myId)
 
-        LoadedMapArray.push(saveMap)
+
         var svgString = new XMLSerializer().serializeToString(saveMap)
 
         var xhr = new XMLHttpRequest();
@@ -87,8 +125,11 @@ var saveMap=domElemG.cloneNode(true)
             {
 
                 cw.sendMapMessageSpan.innerHTML = "Thanks, your map has been received and placed in the library."
-                //cw.refreshMapLibraryButton.disabled = false
+               zoomRect.style.display="none"
                 cw.sendButton.disabled = true
+               
+                     MapDoc=null
+
             }
            if (this.status == 500)
             { //---Error---
@@ -98,47 +139,101 @@ var saveMap=domElemG.cloneNode(true)
         };
 
         xhr.send(svgString);
-     }
-     else
-     {
-       saveMap.setAttribute("id", EditMapId)
-       deleteEditMap(EditMapId,saveMap)
 
 
-     }
+
 
 }
-
-function deleteMap(myId)
+//--remove existing map, replace with edited---
+function sendEditMap()
 {
+    var cw = addElemMapCw
+
+    var email = cw.myMapEmailValue.value
+    var title = cw.myMapTitleValue.value
+   setCookie("email",email,720)
+
+     var saveEditMap=domElemG.cloneNode(true)
 
 
 
-    var svgString = "<remove myId='"+myId+"' />"
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "_ASP/removeMap.asp", true);
-    xhr.onload = function()
+         saveEditMap.setAttribute("title", title)
+         saveEditMap.setAttribute("email", email)
+    saveEditMap.setAttribute("MyMapZoom", MyMapZoom)
+    saveEditMap.setAttribute("MyMapCenterLat",MyMapCenterLat)
+    saveEditMap.setAttribute("MyMapCenterLng",MyMapCenterLng)
+    saveEditMap.setAttribute("MyMapLatUL",MyMapLatUL)
+    saveEditMap.setAttribute("MyMapLngUL",MyMapLngUL)
+    saveEditMap.setAttribute("MyMapLatLR",MyMapLatLR )
+    saveEditMap.setAttribute("MyMapLngLR",MyMapLngLR)
+
+    saveEditMap.setAttribute("boundsRect-InitZoom",BoundsRect.attr("InitZoom"))
+    saveEditMap.setAttribute("boundsRect-rectX",BoundsRect.attr("rectX"))
+    saveEditMap.setAttribute("boundsRect-rectY",BoundsRect.attr("rectY"))
+    saveEditMap.setAttribute("boundsRect-lat",BoundsRect.attr("lat"))
+    saveEditMap.setAttribute("boundsRect-lng",BoundsRect.attr("lng"))
+    saveEditMap.setAttribute("boundsRect-width",BoundsRect.attr("width"))
+    saveEditMap.setAttribute("boundsRect-height",BoundsRect.attr("height"))
+
+ //---clear all elements---
+    for(var k=saveEditMap.childNodes.length-1;k>=0;k--)
+        saveEditMap.removeChild(saveEditMap.childNodes.item(k))
+
+      var bb=boundsRect.getBBox()
+
+    var r = mySVG.createSVGRect();
+    r.x = bb.x;
+    r.y = bb.y;
+    r.width = bb.width;
+    r.height = bb.height;
+    var nodeList = mySVG.getIntersectionList(r, null);
+    var arr = Array.from(nodeList);
+    for(var k=0;k<arr.length;k++)
     {
-        if (this.status == 200)
-        {
+        var elem=arr[k]
+        var myParent=elem.parentNode
 
-            document.getElementById("deleteMapButton"+myId).disabled=true
-            document.getElementById("deleteMapButton"+myId).innerHTML="..deleted.."
-            MapDoc=null
-            setTimeout(getMapLibrary(),1500)
+        if(myParent.id=="domElemG")
+        {
+            var clone=elem.cloneNode(true)
+
+            clone.removeAttribute("onmousedown")
+            clone.removeAttribute("onmouseover")
+            clone.removeAttribute("onmouseout")
+            clone.setAttribute("pointer-events","none")
+
+
+                 var utcMS = new Date().getTime()
+                saveEditMap.setAttribute("editTimeUtcMS", utcMS)
+
+
+
+            saveEditMap.appendChild(clone)
+
         }
 
-    };
+     if(elem.parentNode.getAttribute("class")=="caveElem")
+        {
+            var clone=elem.parentNode.cloneNode(true)
 
-    xhr.send(svgString);
+            clone.removeAttribute("onmousedown")
+            saveEditMap.appendChild(clone)
 
-}
+        }
 
-//--remove existing map, replace with edited---
-function deleteEditMap(myId,saveMap)
-{
-    var svgRemoveString = "<remove myId='"+myId+"' />"
+
+
+    }
+
+
+    saveEditMap.insertBefore(defsGradient.cloneNode("true"),saveEditMap.firstChild)
+    saveEditMap.insertBefore(defsPattern.cloneNode("true"),saveEditMap.firstChild)
+    saveEditMap.insertBefore(arrowDefs.cloneNode("true"),saveEditMap.firstChild)
+
+         saveEditMap.setAttribute("id", EditMapId)
+ 
+    var svgRemoveString = "<remove myId='"+EditMapId+"' />"
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "_ASP/removeMap.asp", true);
@@ -146,7 +241,8 @@ function deleteEditMap(myId,saveMap)
     {
         if (this.status == 200)    //---insert replacement(edited) map
         {
-           var svgEditString = new XMLSerializer().serializeToString(saveMap)
+
+           var svgEditString = new XMLSerializer().serializeToString(saveEditMap)
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "_ASP/sendMap.asp", true);
@@ -167,11 +263,22 @@ function deleteEditMap(myId,saveMap)
                        openAddMapButton.style.background="#C3E6D3"
                        openAddMapButton.innerHTML="Save Map"
                      BoundsRect.style("visibility","visible")
+                     var createdBy="<br><span style=font-size:90%;font-weight:normal >Created By: "+email+"</span>"
+
+
+                        var utcMs=+saveEditMap.getAttribute("editTimeUtcMS")
+
+
+                    var utc= new Date(utcMs).toUTCString()
+                    var atDate="<span style=font-size:80%;font-weight:normal > <i>("+utc+")</i></span>"
+
+                    myMapTitleDiv.innerHTML=title+createdBy+atDate
                        myMapTitleDiv.style.visibility="visible"
                        //update table---
                      MapDoc=null
-                     getMapLibrary()
+
                      EditMapId=null
+
                 }
                if (this.status == 500)
                 { //---Error---
@@ -188,134 +295,34 @@ function deleteEditMap(myId,saveMap)
     xhr.send(svgRemoveString);
 
 }
-
-
-function sendUpdateMap()
+function deleteMap(myId)
 {
-    sendMapUpdateMessageSpan.innerHTML = ''
-    var myId = retrieveMapIdValue.value
-    var title = myMapTitleUpdateValue.value
-    var description = myMapDescriptionUpdateValue.value
-    var name = myMapNameUpdateValue.value
-    var email = myMapEmailUpdateValue.value
-    if(myMapCategoryUpdateSelect.selelectedIndex!=0)
-        var category = myMapCategoryUpdateSelect.options[myMapCategoryUpdateSelect.selelectedIndex].text
-        else
-            var category = "Other"
-
-            var mapG = document.createElementNS(NS, "g")
-
-            //---get all elements in the drawing and build the map---
-            var paths = domAddPathG.childNodes
-            var elems = domAddElemG.childNodes
-            var HMIs = domAddHmiG.childNodes
-            var symbols = domAddSymbolG.childNodes
-            var icons = domAddIconG.childNodes
-            var maps = domAddMapG.childNodes
-
-            mapG.setAttribute("id", myId)
-            mapG.setAttribute("category", category)
-            mapG.setAttribute("title", title)
-            mapG.setAttribute("description", description)
-            mapG.setAttribute("name", name)
-            mapG.setAttribute("email", email)
-
-            for(k = 0; k<paths.length; k++)
-        {
-            var el = paths.item(k).cloneNode(true)
-            el.removeAttribute("onmousedown")
-            el.removeAttribute("class")
-            el.removeAttribute("id")
-            el.removeAttribute("style")
-            mapG.appendChild(el)
-        }
-        for(k = 0; k<elems.length; k++)
+    if(boundsRect.style.visibility=="visible")
     {
-        var el = elems.item(k).cloneNode(true)
-        el.removeAttribute("onmousedown")
-        el.removeAttribute("class")
-        el.removeAttribute("id")
-        el.removeAttribute("style")
-        mapG.appendChild(el)
+        for(var j=domElemG.childNodes.length-1;j>=0;j--)
+            domElemG.removeChild(domElemG.childNodes.item(j))
+        boundsRect.style.visibility="hidden"
     }
-    for(k = 0; k<HMIs.length; k++)
-    {
-        var el = HMIs.item(k).cloneNode(true)
-        el.removeAttribute("onmousedown")
-        el.removeAttribute("class")
-        el.removeAttribute("id")
-        el.removeAttribute("style")
-        mapG.appendChild(el)
-    }
-    for(k = 0; k<symbols.length; k++)
-    {
-        var el = symbols.item(k).cloneNode(true)
-        el.removeAttribute("onmousedown")
-        el.removeAttribute("class")
-        el.removeAttribute("id")
-        el.removeAttribute("style")
-        mapG.appendChild(el)
-    }
-    for(k = 0; k<icons.length; k++)
-    {
-        var el = icons.item(k).cloneNode(true)
-        el.removeAttribute("onmousedown")
-        el.removeAttribute("class")
-        el.removeAttribute("id")
-        el.removeAttribute("style")
-        mapG.appendChild(el)
-    }
-    for(k = 0; k<maps.length; k++)
-    {
-        var el = maps.item(k).cloneNode(true)
-        el.removeAttribute("onmousedown")
-        el.removeAttribute("class")
-        el.removeAttribute("id")
-        el.removeAttribute("style")
-        mapG.appendChild(el)
-    }
-    domWrapper.style.display = "block"
-    domWrapper.appendChild(mapG)
-    var bbW = domWrapper.getBBox()
-    var cxW = bbW.x+.5*bbW.width
-    var cyW = bbW.y+.5*bbW.height
-
-    var rect = document.createElementNS(NS, "rect")
-    rect.setAttribute("width", bbW.width)
-    rect.setAttribute("height", bbW.height)
-    rect.setAttribute("stroke", "none")
-    rect.setAttribute("fill", "orange")
-    rect.setAttribute("fill-opacity", ".4")
-    // rect.setAttribute("onmousedown","editMap("+myId+",evt)")
-    rect.setAttribute("transform", "translate("+(bbW.x)+","+(bbW.y)+")")
-    mapG.appendChild(rect)
-
-    mapG.setAttribute("transform", "translate(0,0)")
-
-    // mapG.setAttribute("transform","translate("+(cxW)+","+(cyW)+")")
-    mapG.setAttribute("nativeWidth", bbW.width)
-    mapG.setAttribute("nativeHeight", bbW.height)
-
-    domAddMapG.appendChild(mapG)
-
-    mapG.lastChild.setAttribute("fill", "white")
-    mapG.lastChild.setAttribute("fill-opacity", "0")
-
-    MapEditArray =[]
-    var svgString = new XMLSerializer().serializeToString(mapG)
+    var svgString = "<remove myId='"+myId+"' />"
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "_ASP/sendUpdateMap.asp", true);
+    xhr.open("POST", "_ASP/removeMap.asp", true);
     xhr.onload = function()
     {
         if (this.status == 200)
         {
-            retrieveMapUpdateDiv.style.display = "none"
-            sendMapUpdateMessageSpan.innerHTML = "Your edited map (<b>"+myId+"</b>) has been received and updated in the library."
 
+            document.getElementById("deleteMapButton"+myId).disabled=true
+            document.getElementById("deleteMapButton"+myId).innerHTML="..deleted.."
+            MapDoc=null
+            setTimeout(getMapLibrary(),1500)
+            elemLevelSpan.innerHTML=""
         }
 
     };
 
     xhr.send(svgString);
+
 }
+
+

@@ -44,6 +44,8 @@ function removeZoomLevel()
      elemLevelSpan.innerHTML=""
      zoomRect.setAttribute("display","none")
 }
+
+
 var MapZoom=2
 function zoomUpdate()
 {
@@ -115,7 +117,21 @@ function zoomUpdateBoundsRect(mapZoom)
     else
        boundsRect.setAttribute("fill","none")
 
+      var level=+BoundsRect.attr("InitZoom")
+       zoomRect.setAttribute("display","none")
+     if(level==MapZoom)
+     {
+      elemLevelSpan.style.background="lime"
 
+
+     }
+      else
+      {
+         elemLevelSpan.style.background="red"
+
+      }
+
+     elemLevelSpan.innerHTML=level
 }
 
 
@@ -190,6 +206,9 @@ function zoomUpdateAddElems()
 				transformList.appendItem(transformRequestObj)
 				transformList.consolidate()
 		}
+
+        if(myClass!="caveElem")
+        {
         	var mapZoom=MyMap.getZoom()
     		var initZoom=parseInt(elem.getAttribute("InitZoom"),10)
              if(myClass!="iconElem"&&myClass!="pgonElem")
@@ -205,7 +224,7 @@ function zoomUpdateAddElems()
     		transformRequestObj.setScale(scale,scale)
     		transformList.appendItem(transformRequestObj)
     		transformList.consolidate()
-
+        }
      }
 
 
