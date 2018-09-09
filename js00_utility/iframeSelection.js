@@ -524,4 +524,4 @@ iframeNameArray[13] = 'editElemMap'
 iframeNameArray[14] = 'addElemArc'
 
 iframeNameArray[15] = 'addElemImage'
-iframeNameArray[15] = 'addElemCave'
+iframeNameArray[16] = 'addElemCave'
