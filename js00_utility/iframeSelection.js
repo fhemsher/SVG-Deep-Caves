@@ -106,6 +106,8 @@ function openAddMapDraw()
          {
             addElemMapCw.containerDiv.style.background="orange"
              addElemMapCw.editAddMapSpan.innerHTML="Save Map Edit"
+              addElemMapCw.myMapTitleValue.value = EditMapTitle
+              addElemMapCw.sendButton.disabled=false
          }
 
 

@@ -253,7 +253,7 @@ function computePolyPoints(mySVG,myPoly)
 }
 function setLatLng(elem)
 {
-      
+  
     var Tfm=elem.getAttribute("transform")
     if(Tfm)
     {

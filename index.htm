@@ -10,7 +10,7 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
 	<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
-
+<script src="https://algorithmia.com/v1/clients/js/algorithmia-0.2.0.js" type="text/javascript"></script>
 <script charset="UTF-8" type="text/javascript" src="js00_utility/iframeSelection.js"></script>
 <script charset="UTF-8" type="text/javascript" src="js00_utility/color.js"></script>
 <script charset="UTF-8" type="text/javascript" src="js00_utility/pathSeg.js"></script>
@@ -37,7 +37,6 @@
  <script  charset="UTF-8" type="text/javascript" src="AddElem/Map/bounds.js"></script>
  <script  charset="UTF-8" type="text/javascript" src="js05_publish.js"></script>
  <script  charset="UTF-8" type="text/javascript" src="worldMagneticModel.js"></script>
-
 
  <style type="text/css">
   .noselect {
@@ -117,7 +116,6 @@ onmousedown="return false;"
 <div id=addElemMapFrameDiv style='padding:10px;border-radius:10px;position:fixed;visibility:hidden;width:1px;height:1px;overflow:hidden'><iframe id=addElemMapFrame style='border-width:0px;height:1px;overflow:hidden;'   scrolling='no' frameborder='0'   ></iframe></div>
 	<script charset="UTF-8" type="text/javascript" src="AddElem/Map/drawMap.js"></script>
 <div id=editElemMapFrameDiv style='padding:10px;border-radius:10px;position:fixed;visibility:hidden;width:1px;height:1px;overflow:hidden'><iframe id=editElemMapFrame style='border-width:0px;height:1px;overflow:hidden;'   scrolling='no' frameborder='0'   ></iframe></div>
-	<script charset="UTF-8" type="text/javascript" src="AddElem/Map/editMap.js"></script>
     <script  charset="UTF-8" type="text/javascript" src="AddElem/Map/aspMapRequest.js"></script>
     <script  charset="UTF-8" type="text/javascript" src="AddElem/Map/updateMap.js"></script>
     <script  charset="UTF-8" type="text/javascript" src="AddElem/Map/writeMapSymbols.js"></script>
@@ -162,7 +160,7 @@ Also includes a  Map Library that stores your expedition maps.
 
 
 <div class=noselect  id=helpDiv style='visibility:hidden;position:absolute;top:60px;left:10px;width:360px;height:1px;background:linen;border:1px solid blue;border-radius:15px;padding:10px;overflow:hidden'>
-<table style=width:100%><td style=width:90%; align=center><h7><b>Creating SVG Shape Elements</b></h7></td><td align=right><button onclick=closeHelp()>X</button></td></table>
+<table style=width:100%><td style=width:90%; align=center><h7><b>Drawing SVG Shape Elements On World Map</b></h7></td><td align=right><button onclick=closeHelp()>X</button></td></table>
 <br>
 SVG shapes are: Circles, ellipses, rectangles, text, paths, arcs, polygons, symbols, icons, and images.<p></p>
 
@@ -206,7 +204,7 @@ The element's level is shown in either green or red when the cursor is over the 
 &nbsp; &nbsp; &nbsp; &nbsp; <button title="Expedition Maps" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=getMapLibraryButton  style=background-color:#C3E6D3 onClick=getMapLibrary()>Your Maps</button><button onClick=openMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
   &nbsp;&nbsp;
  <button title="Save current expedition map to Library" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddMapButton   style=background-color:#C3E6D3 onClick=openAddMapDraw()  ><i>Save Map</i></button><button onClick=openSaveMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
-
+ <a id=cancelEditA title="Cancel your map edit" style=visibility:hidden;background:orange href="javascript:cancelEdit()">Cancel Edit</a>
 
 
 <br>
@@ -259,12 +257,15 @@ You can also delete your map  from the library.
 </div>
 
 <div class=noselect  id=saveMapHelpDiv style='visibility:hidden;position:absolute;top:60px;left:10px;width:360px;height:1px;background:#C3E6D3;;border:1px solid blue;border-radius:15px;padding:10px;overflow:hidden'>
-<table style=width:100%><td style=width:90%; align=center><h7><b>Save Map</b></h7></td><td align=right><button onclick=closeSaveMapHelp()>X</button></td></table>
+<table style=width:100%><td style=width:90%; align=center><h7><b>Save Map Help</b></h7></td><td align=right><button onclick=closeSaveMapHelp()>X</button></td></table>
    <center> <i>Create &amp; save your map</i></center>
-  <img src="images/saveMap.png" alt="" />
+   This will take a 'snapshot' of the current map view with the elements you have added to the World Map.
 <br>
 
+
    Provide a title for the map and your email address
+  <br><img src="images/saveMap.png" alt="" />
+
 <br>
 
 Selecting <button>save</button> will store the current map view and its SVG elements into the Map Library.
@@ -283,7 +284,6 @@ Selecting <button>save</button> will store the current map view and its SVG elem
  <center><div id=mapEmptyDiv>(Map Library Empty...)</div></center>
 <table id=mapTable style=width:100% ></table>
 
-<center><button title="Close the map and begin a new map" id=startNewMapButton style=visibility:hidden onClick=startNewMap()>Start New Map</button></center>
 <button title="Close Map Library" id=mapTableCloseButton onmouseover=this.style.background="red"  onmouseout=this.style.background=""  style='visibility:hidden;position:fixed;top:70px;left:345px' onclick=closeMapTable() >X</button>
 
 </div>

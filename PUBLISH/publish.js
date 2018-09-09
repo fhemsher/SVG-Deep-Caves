@@ -24,7 +24,7 @@ function loadPublishSVG(publishID)
 
                     mySVG.removeChild(domElemG)
                     var elemG=group.cloneNode(true)
-                      console.log(elemG)
+
                     mySVG.removeChild(defsGradient)
                     mySVG.removeChild(defsPattern)
                     mySVG.removeChild(arrowDefs)
@@ -35,8 +35,19 @@ function loadPublishSVG(publishID)
 
                     elemG.id="domElemG"
                     mySVG.insertBefore(elemG,domCaveG)
+                     var createdBy="<br><span style=font-size:90%;font-weight:normal >Created By: "+elemG.getAttribute("email")+"</span>"
 
-                    myMapTitleDiv.innerHTML=elemG.getAttribute("title")
+                    if(elemG.getAttribute("editTimeUtcMS"))
+                        var utcMs=+elemG.getAttribute("editTimeUtcMS")
+                    else
+                        var utcMs=+mapId.split("map")[1]
+
+                    var utc= new Date(utcMs).toUTCString()
+                    var atDate="<span style=font-size:80%;font-weight:normal > <i>("+utc+")</i></span>"
+
+                    myMapTitleDiv.innerHTML=elemG.getAttribute("title")+createdBy+atDate
+
+                  
                     myMapTitleDiv.style.visibility="visible"
                     var ulLat=+elemG.getAttribute("MyMapLatUL")
                     var ulLng=+elemG.getAttribute("MyMapLngUL")
@@ -98,7 +109,7 @@ function loadCavesSVG(publishID)
                         if(group.nodeName!="#text")
                         {
                                 var caveId = group.getAttribute("id")
-                             console.log([caveId,caveID])
+
                                 if(caveId==caveID)
                                 {
                                         mySVG.removeChild(domCaveG)
