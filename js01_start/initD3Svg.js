@@ -173,6 +173,8 @@ feMerge.append("feMergeNode")
     .attr("pointer-events", "none")
     .attr("id", "domWrapper")
 
+    var bgImageG=MySVG.append("g")
+        .attr("id", "bgImageG")
 
     //---text/icon/path drag protect---
     CoverRect = MySVG.append("rect")
