@@ -85,6 +85,9 @@ onmousedown="return false;"
 <div id=addElemImageFrameDiv style='padding:10px;border-radius:10px;position:fixed;visibility:hidden;width:1px;height:1px;overflow:hidden'><iframe id=addElemImageFrame style='border-width:0px;height:1px;overflow:hidden;'   scrolling='no' frameborder='0'   ></iframe></div>
 	<script charset="UTF-8" type="text/javascript" src="AddElem/Image/drawImage.js"></script>
     <script charset="UTF-8" type="text/javascript" src="js03_drag/dragObjImage.js"></script>
+<div id=addElemBGImageFrameDiv style='padding:10px;border-radius:10px;position:fixed;visibility:hidden;width:1px;height:1px;overflow:hidden'><iframe id=addElemBGImageFrame style='border-width:0px;height:1px;overflow:hidden;'   scrolling='no' frameborder='0'   ></iframe></div>
+	<script charset="UTF-8" type="text/javascript" src="AddElem/BGImage/drawBGImage.js"></script>
+    <script charset="UTF-8" type="text/javascript" src="js03_drag/dragObjBGImage.js"></script>
 
 
 <div id=addElemTextFrameDiv style='padding:10px;border-radius:10px;position:fixed;visibility:hidden;width:1px;height:1px;overflow:hidden'><iframe id=addElemTextFrame style='border-width:0px;height:1px;overflow:hidden;'   scrolling='no' frameborder='0'   ></iframe></div>
@@ -206,6 +209,7 @@ The element's level is shown in either green or red when the cursor is over the 
   &nbsp;&nbsp;
  <button title="Save current expedition map to Library" onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddMapButton   style=background-color:#C3E6D3 onClick=openAddMapDraw()  ><i>Save Map</i></button><button onClick=openSaveMapHelp() style=width:20px;height:20px;padding:0px;border:0px;background:transparent ><img src="Images/help.png" alt="Maps"  width=20 height=20 /></button>
  <a id=cancelEditA title="Cancel your map edit" style=visibility:hidden;background:orange href="javascript:cancelEdit()">Cancel Edit</a>
+ &nbsp; &nbsp; &nbsp; &nbsp; <button onmouseover=this.style.borderColor="lime" onmouseout=this.style.borderColor=''  id=openAddBGImageButton title="Add a background template image from your computer" style=background-color:ghostwhite onClick=openAddBGImageDraw()>Template Image</button>
 
 
 <br>
