@@ -26,6 +26,7 @@ function startCursorLoc()
             //    if(addElemMapViz==true)trackDrawMap()
 
                 if(addElemImageViz==true)trackDrawImage()
+                if(addElemBGImageViz==true)trackDrawBGImage()
 
                //----GPS---
                 var svgPnt=L.point(SVGx,SVGy)
