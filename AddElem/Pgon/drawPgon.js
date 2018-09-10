@@ -51,6 +51,7 @@ function closeDrawPgon()
     MyMap.scrollWheelZoom.enable();
 
 }
+var PgonActiveElem
 function editPgonStart(evt)
 {
 
@@ -65,20 +66,33 @@ function editPgonStart(evt)
     else //---firefox--
         isRightMB = evt.which == 3;
 
-    if(isRightMB&&ZoomDrawing==false)
-    {
-        //openIframe("AddElem", "addElemPgon", 0)
-        openAddPgonDraw()
-    }
-    var myZoomLevel=+evt.target.parentNode.getAttribute("InitZoom")
-    if(isRightMB&&myZoomLevel==MapZoom)
-    {
+       var myZoomLevel=+evt.target.parentNode.getAttribute("InitZoom")
+        if(isRightMB&&myZoomLevel==MapZoom)
+        {
+                    mySVG.setAttribute("cursor","default")
+                MyMap.scrollWheelZoom.disable();
+                MyMap.dragging.disable()
+                var cw = addElemPgonCw
+                PgonActiveElem = evt.target.parentNode
+                cw.topBotDiv.style.visibility = "visible"
+                if(addElemPgonLoad)
+                {
+                        openIframe("AddElem", "addElemPgon", 0)
+                        cw.containerDiv.style.background = "orange"
+                        cw.pgonDrawSpan.innerHTML = "Edit Symbols"
+                        cw.editPgonSpan.innerHTML = "Select a checkbox below to choose the specific edit type. Then click on symbol to edit it."
 
-         MyMap.dragging.disable()
-    MyMap.scrollWheelZoom.disable();
-        //ZoomDraggedElems.push([dragTarget, "editPgonStart(evt)", classed])
-    }
+                }
+                else //--allow time to create icons---
+                {
+                        openIframe("AddElem", "addElemPgon", 0)
 
+                }
+
+                dragSymbol()
+                //cw.dragIconCheck.checked=true
+                //dragIconChecked()
+        }
 }
 
 function startPgonDraw()
@@ -107,11 +121,13 @@ function trackDrawPgon()
     }
 }
 var DragSymbols = false
-function dragSymbolChecked()
+function dragSymbol()
 {
     var cw = addElemPgonCw
-    if(cw.dragSymbolCheck.checked==true)
-    {
+   // if(cw.dragSymbolCheck.checked==true)
+    //{
+               MyMap.scrollWheelZoom.disable();
+        MyMap.dragging.disable()
         DragSymbols = true
         DrawX.style("display", "none")
         mySVG.removeAttribute("onclick")
@@ -144,7 +160,7 @@ function dragSymbolChecked()
 
             }
         }
-
+    /*
     }
     else
     {
@@ -153,9 +169,10 @@ function dragSymbolChecked()
         mySVG.removeAttribute("onmousedown")
         mySVG.removeAttribute("onmousemove")
         mySVG.removeAttribute("onmouseup")
-
+             MyMap.scrollWheelZoom.enable();
+        MyMap.dragging.enable()
     }
-
+   */
 }
 var ResizeSymbols = false
 function resizeSymbolChecked()
@@ -463,9 +480,9 @@ function topDrawSymbol()
 }
 function symbolTop(evt)
 {
-    var pgon = evt.target.parentNode
 
-    domElemG.appendChild(pgon)
+    domElemG.appendChild(PgonActiveElem)
+    closeDrawPgon()
 
 }
 
@@ -510,9 +527,9 @@ function botDrawSymbol()
 }
 function symbolBot(evt)
 {
-    var pgon = evt.target.parentNode
 
-    domElemG.insertBefore(pgon, domElemG.firstChild)
+    domElemG.insertBefore(PgonActiveElem, domElemG.firstChild)
+    closeDrawPgon()
 
 }
 
@@ -556,9 +573,10 @@ function plantPgonSymbol(event)
             activeElem.setAttribute("onmouseover", "myZoomLevel("+MapZoom+","+activeElem.id+")")
             activeElem.setAttribute("onmouseout", "removeZoomLevel()")
           setLatLng(activeElem) //---helperFuncts.js---
-           MyMap.dragging.enable()
-           MyMap.scrollWheelZoom.enable();
-
+          // MyMap.dragging.enable()
+           //MyMap.scrollWheelZoom.enable();
+          activeElem=null
+          ActiveElem=null
     }
 }
 
