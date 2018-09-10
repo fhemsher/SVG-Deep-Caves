@@ -82,8 +82,51 @@ function zoomUpdate()
       }
       zoomRect.setAttribute("display","block")
      }
+     //---template image--------
+    bgImageG=document.getElementById("bgImageG")
+    if(bgImageG.childNodes.length>0)
+    {
+        var elem=bgImageG.firstChild
+        var ctm = elem.getCTM()
+        RAD2DEG = 180 / Math.PI;
+        var rotate = Math.atan2(ctm.b, ctm.a) * RAD2DEG;
 
 
+        elem.setAttribute("transform","")
+        //elem.removeAttribute("transform")
+
+        var transformRequestObj=mySVG.createSVGTransform()
+
+        var animTransformList=elem.transform
+
+        var transformList=animTransformList.baseVal
+
+        var lat=parseFloat(elem.getAttribute("lat"))
+        var lng=parseFloat(elem.getAttribute("lng"))
+
+
+        var latLng= new  L.latLng(lat, lng)
+        var transX=MyMap.latLngToLayerPoint(latLng).x
+        var transY=MyMap.latLngToLayerPoint(latLng).y
+
+        transformRequestObj.setTranslate(transX,transY)
+        transformList.appendItem(transformRequestObj)
+        transformList.consolidate()
+        if(rotate!=0)
+        {
+            transformRequestObj.setRotate(rotate,0,0)
+            transformList.appendItem(transformRequestObj)
+            transformList.consolidate()
+        }
+
+        var initZoom=+elem.getAttribute("InitZoom")
+
+            var scale= (Math.pow(2, MapZoom)/2)/(Math.pow(2, initZoom)/2);
+        transformRequestObj.setScale(scale,scale)
+        transformList.appendItem(transformRequestObj)
+        transformList.consolidate()
+
+    }
    zoomUpdateCaves()
 
 
