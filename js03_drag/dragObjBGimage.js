@@ -11,7 +11,7 @@ var BGimageUL =[]
 function startDragBGimage(evt)
 {
 
-    if(activeElem&&!DraggingObj&&addElemBGimageViz==true) //---prevents dragging conflicts on other draggable elements---
+    if(activeElem&&!DraggingObj&&addElemBGImageViz==true) //---prevents dragging conflicts on other draggable elements---
     {
         if(evt.target.getAttribute("id")=="activeBGimage" || evt.target.getAttribute("id")=="dragDot")
         {
@@ -63,7 +63,7 @@ function startDragBGimage(evt)
 
             if(objDragTarget.getAttribute("id")=="dragDot")
             {
-                    var cw = addElemBGimageCw
+                    var cw = addElemBGImageCw
                 var w = +activeBGimage.getAttribute("width")
                 var h = +activeBGimage.getAttribute("height")
                 cw.bgImageWidthValue.value = w.toFixed(0)
@@ -107,7 +107,7 @@ function dragBGimage(evt)
                 activeBGimage.setAttribute("width", width)
                 activeBGimage.setAttribute("height", height)
 
-                var cw = addElemBGimageCw
+                var cw = addElemBGImageCw
 
 
                 var w = +activeBGimage.getAttribute("width")
@@ -125,6 +125,14 @@ function dragBGimage(evt)
             objTransList.consolidate()
             DrawX.attr("transform", ActiveElem.attr("transform"))
 
+            var transformRequest = activeElem.ownerSVGElement.createSVGTransform()
+            //---attach new or existing transform to element, init its transform list---
+            var myTransListAnim = dragDot.transform
+            var transList = myTransListAnim.baseVal
+
+            transformRequest.setTranslate(Pnt.x, Pnt.y)
+            transList.appendItem(transformRequest)
+            transList.consolidate()
         }
 
         //if(ActiveElem)
