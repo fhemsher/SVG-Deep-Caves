@@ -7,6 +7,7 @@ function disableAllButtons()
     openAddArcButton.disabled = true
     openAddIconButton.disabled = true
     openAddImageButton.disabled = true
+    openAddBGImageButton.disabled = true
 
     openAddEllipseButton.disabled = true
     openAddRectButton.disabled = true
@@ -32,6 +33,7 @@ function enableAllButtons()
     openAddArcButton.disabled = false
     openAddIconButton.disabled = false
     openAddImageButton.disabled = false
+    openAddBGImageButton.disabled = false
 
     openAddEllipseButton.disabled = false
     openAddRectButton.disabled = false
@@ -51,6 +53,7 @@ function enableAllButtons()
     openAddArcButton.style.borderColor = ""
     openAddIconButton.style.borderColor = ""
     openAddImageButton.style.borderColor = ""
+    openAddBGImageButton.style.borderColor = ""
 
     openAddEllipseButton.style.borderColor = ""
     openAddRectButton.style.borderColor = ""
@@ -143,6 +146,24 @@ function openAddImageDraw()
         openAddImageButton.style.borderStyle = "inset"
 
 }
+
+function openAddBGImageDraw()
+{
+   if(addElemBGImageLoad==true)
+       startBGimageDraw()
+    if(document.getElementById(DrawBGimageEditId))
+    {   var cw = addElemBGImageCw
+        cw.editTemplateCheckDiv.style.visibility="visible"
+
+
+    }
+
+        openIframe("AddElem", "addElemBGImage", 0)
+       // mySVG.setAttribute("onclick", "plantPgonSymbol(event)")
+
+        openAddBGImageButton.style.borderStyle = "inset"
+}
+
 
 function openAddTexture()
 {
@@ -268,6 +289,7 @@ function isAddElemOpen() //---called from iframeSelection.js---
     if(addElemCaveViz==true)AddElemOpen = true;
     if(addElemIconViz==true)AddElemOpen = true;
     if(addElemImageViz==true)AddElemOpen = true;
+    if(addElemBGImageViz==true)AddElemOpen = true;
 
     if(addElemEllipseViz==true)AddElemOpen = true;
     if(addElemRectViz==true)AddElemOpen = true;
@@ -351,6 +373,7 @@ function closeIframe(name)
     openAddCaveButton.style.borderStyle = ""
     openAddIconButton.style.borderStyle = ""
     openAddImageButton.style.borderStyle = ""
+    openAddBGImageButton.style.borderStyle = ""
 
     openAddEllipseButton.style.borderStyle = ""
     openAddRectButton.style.borderStyle = ""
@@ -392,6 +415,7 @@ function closeAllFrames()
         openAddMapButton.style.borderStyle = ""
         openAddIconButton.style.borderStyle = ""
         openAddImageButton.style.borderStyle = ""
+        openAddBGImageButton.style.borderStyle = ""
 
         openAddEllipseButton.style.borderStyle = ""
         openAddRectButton.style.borderStyle = ""
@@ -449,6 +473,7 @@ var addElemCaveLoad = false
 var addElemArcLoad = false
 var addElemIconLoad = false
 var addElemImageLoad = false
+var addElemBGImageLoad = false
 var addElemPgonLoad = false
 var addElemPolygonLoad = false
 var addElemTextureLoad = false
@@ -469,6 +494,7 @@ var editElemMapViz = false
 
 var addElemIconViz = false
 var addElemImageViz = false
+var addElemBGImageViz = false
 var addElemPgonViz = false
 var addElemPolygonViz = false
 var addElemTextureViz = false
@@ -487,6 +513,7 @@ var addElemMapCw
 var editElemMapCw
 var addElemIconCw
 var addElemImageCw
+var addElemBGImageCw
 
 var addElemPgonCw
 var addElemPolygonCw
@@ -524,4 +551,5 @@ iframeNameArray[13] = 'editElemMap'
 iframeNameArray[14] = 'addElemArc'
 
 iframeNameArray[15] = 'addElemImage'
-iframeNameArray[16] = 'addElemCave'
+iframeNameArray[16] = 'addElemBGImage'
+iframeNameArray[17] = 'addElemCave'
