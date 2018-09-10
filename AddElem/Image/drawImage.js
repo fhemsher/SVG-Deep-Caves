@@ -48,8 +48,8 @@ function placeDrawImage()
         .attr("fill-opacity", opacity)
 
         activeElem=document.getElementById("activeElem")
-        activeElem.setAttribute("height", 200)
-        activeElem.setAttribute("width", 200)
+        activeElem.setAttribute("height", ImageHeight)
+        activeElem.setAttribute("width", ImageWidth)
         activeElem.setAttribute("href", ImageHREF)
         activeElem.setAttribute("InitZoom", MyMap.getZoom()       )
 
@@ -63,11 +63,9 @@ function placeDrawImage()
 
 
 
-        var bb=activeElem.getBBox()
-        DragDot.attr("cx", bb.width)
-        DragDot.attr("cy", bb.height)
+
          DragDot.attr("class", "dragTargetObj")
-        DragDot.attr("transform", "translate("+(SVGx)+" "+SVGy+")")
+        DragDot.attr("transform", "translate("+(SVGx+ImageWidth)+" "+(SVGy+ImageHeight)+")")
         DragDot.style("visibility", "visible")
 
 
@@ -76,8 +74,8 @@ function placeDrawImage()
         DrawX.attr("transform", "translate("+SVGx+" "+SVGy+")")
 
 
-        cw.bgImageWidthValue.value = 200
-        cw.bgImageHeightValue.value = 200
+        cw.bgImageWidthValue.value = ImageWidth
+        cw.bgImageHeightValue.value = ImageHeight
         ImageCorner =[SVGx, SVGy]
 
         mySVG.removeAttribute('onclick')
@@ -88,11 +86,13 @@ function placeDrawImage()
 
         cw.drawImageCancelButton.disabled = false
         cw.drawImageFinishButton.disabled = false
-       
+
     }
 }
 
 var ImageHREF
+var ImageWidth
+var ImageHeight
 function loadImageFile()
 {
 
@@ -104,7 +104,14 @@ function loadImageFile()
         {
 
             ImageHREF = reader.result
+             var image = new Image();
+            image.src = reader.result;
+            image.onload = function() {
 
+                ImageWidth=image.naturalWidth
+                ImageHeight=image.naturalHeight
+
+            }
         }
         , false);
 
