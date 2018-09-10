@@ -25,9 +25,11 @@ function placeDrawBGimage()
     .attr("opacity", opacity)
     .attr("x", 0)
     .attr("y", 0)
-    .attr("height", 200)
-    .attr("width", 200)
+    .attr("height", BGImageHeight)
+    .attr("width", BGImageWidth)
     .attr("href",ImageHREF)
+
+
     //---place dragDot in g---
     activeElem = document.getElementById("activeElem")
 
@@ -38,7 +40,7 @@ function placeDrawBGimage()
 
 
          DragDot.attr("class", "dragTargetObj")
-        DragDot.attr("transform", "translate("+(SVGx+200)+" "+(SVGy+200)+")")
+        DragDot.attr("transform", "translate("+(SVGx+BGImageWidth)+" "+(SVGy+BGImageHeight)+")")
         DragDot.style("visibility", "visible")
 
 
@@ -67,6 +69,8 @@ function placeDrawBGimage()
 }
 
 var ImageHREF
+var BGImageWidth
+var BGImageHeight
 function loadBGImageFile()
 {
 
@@ -78,6 +82,15 @@ function loadBGImageFile()
         {
 
             ImageHREF = reader.result
+             var image = new Image();
+            image.src = reader.result;
+            image.onload = function() {
+
+                BGImageWidth=image.naturalWidth
+                BGImageHeight=image.naturalHeight
+
+            }
+
 
         }
         , false);
@@ -400,7 +413,7 @@ function finishEditBGimage()
             finishedElem.style.cursor = "default"
             finishedElem.style.visibility = ""
             //---is this a timelined elem---
-             setLatLng(finishedElem) //---helperFuncts.js---     
+             setLatLng(finishedElem) //---helperFuncts.js---
            // finishedElem.setAttribute("onmousedown", "editBGimageDraw("+DrawBGimageEditId+",evt)")
             finishedElem.setAttribute("id", DrawBGimageEditId)
             UpdateThisBGimage = finishedElem
