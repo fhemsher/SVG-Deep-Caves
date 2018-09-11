@@ -18,6 +18,7 @@ var MySVG
 var ZoomRect
 var BoundsRect
 var CaveX
+var ImgDragArrow
 function setGeoloc()
 {
 	MyMap.locate({setView: true, maxZoom: 16});
@@ -276,6 +277,17 @@ feMerge.append("feMergeNode")
     .attr("vector-effect", "non-scaling-stroke")
     .style("visibility", "hidden")
     .style("cursor", "default")
+
+    ImgDragArrow=MySVG.append("image")
+    .attr("id","imgDragArrow")
+    .attr("href","Images/ImgDragArrow.png")
+    .attr("class","dragTargetObj")
+    .attr("width","25")
+    .attr("height","25")
+    .attr("x","-12.5")
+    .attr("y","-12.5")
+    .style("visibility", "hidden")
+    .style("cursor", "nw-resize")
 
 
    var svgText=MySVG.append("text")
