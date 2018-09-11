@@ -35,7 +35,7 @@ function startImageDraw()
 function placeDrawImage()
 {
     var cw = addElemImageCw
-    if(cw.bgImgFile.value!="")
+    if(cw.imgFile.value!="")
     {
 
         coverOn()
@@ -59,14 +59,14 @@ function placeDrawImage()
         ActiveElem.attr("class", "dragTargetObj")
         ActiveElem.attr("pointer-events", null)
 
-        domActiveElemG.appendChild(dragDot)
+        domActiveElemG.appendChild(imgDragArrow)
 
 
 
 
-         DragDot.attr("class", "dragTargetObj")
-        DragDot.attr("transform", "translate("+(SVGx+ImageWidth)+" "+(SVGy+ImageHeight)+")")
-        DragDot.style("visibility", "visible")
+         ImgDragArrow.attr("class", "dragTargetObj")
+        ImgDragArrow.attr("transform", "translate("+(SVGx+ImageWidth)+" "+(SVGy+ImageHeight)+")")
+        ImgDragArrow.style("visibility", "visible")
 
 
         //activeElem.setAttribute("transform", "translate("+SVGx+" "+SVGy+")")
@@ -74,8 +74,8 @@ function placeDrawImage()
         DrawX.attr("transform", "translate("+SVGx+" "+SVGy+")")
 
 
-        cw.bgImageWidthValue.value = ImageWidth
-        cw.bgImageHeightValue.value = ImageHeight
+        cw.imageWidthValue.value = ImageWidth
+        cw.imageHeightValue.value = ImageHeight
         ImageCorner =[SVGx, SVGy]
 
         mySVG.removeAttribute('onclick')
@@ -86,7 +86,7 @@ function placeDrawImage()
 
         cw.drawImageCancelButton.disabled = false
         cw.drawImageFinishButton.disabled = false
-
+       
     }
 }
 
@@ -110,7 +110,8 @@ function loadImageFile()
 
                 ImageWidth=image.naturalWidth
                 ImageHeight=image.naturalHeight
-
+                cw.imageWidthValue.value = ImageWidth
+                cw.imageHeightValue.value = ImageHeight
             }
         }
         , false);
@@ -158,9 +159,8 @@ function closeDrawImage()
 
             document.getElementById("activeElem").removeAttribute("class")
             domActiveElemG.removeChild(document.getElementById("activeElem"))
-            mySVG.appendChild(dragDot) //--place drag dot on top---
-            dragDot.removeAttribute("cx")
-            dragDot.removeAttribute("cy")
+            mySVG.appendChild(imgDragArrow) //--place drag dot on top---
+
 
         }
         activeElem = null
@@ -169,10 +169,11 @@ function closeDrawImage()
         DrawX.style("display", "none")
         DrawX.attr("stroke", "violet")
         DrawX.attr("transform", null)
-        DragDot.attr("cx", null)
-        DragDot.attr("transform", null)
-        DragDot.style("visibility", "hidden")
 
+        ImgDragArrow.attr("transform", null)
+        ImgDragArrow.style("visibility", "hidden")
+        imgDragArrow.setAttribute("x",-12.5)
+        imgDragArrow.setAttribute("y",-12.5)
         cw.drawImageTopButton.style.visibility = "hidden"
         // cw.drawImageBotButton.style.visibility = "hidden"
         cw.drawImageBotButton.disabled = true
@@ -214,9 +215,9 @@ function startImageDraw()
 
 
         cw.adjustedRotateImageValue.value = 0
-        cw.bgImgFile.value = ""
-        cw.bgImageWidthValue.value = ""
-        cw.bgImageHeightValue.value = ""
+        cw.imgFile.value = ""
+        cw.imageWidthValue.value = ""
+        cw.imageHeightValue.value = ""
         ImageHREf = null
 
 }
@@ -266,8 +267,8 @@ function finishDrawImage()
 
 
             DrawX.style("display", "none")
-            DragDot.style("visibility", "hidden")
-            //topG.appendChild(dragDot)
+            ImgDragArrow.style("visibility", "hidden")
+            //topG.appendChild(imgDragArrow)
             cw.drawImageFinishButton.disabled = true
             cw.drawImageCancelButton.disabled = true
             cw.drawImageBotButton.disabled = true
@@ -287,17 +288,20 @@ function cancelDrawImage()
             activeElem = null
             // d3SVG.style("cursor", "default")
             ActiveElem = null
-             ImageHREF = null
+            ImageHREF = null
             mySVG.setAttribute('onclick', "placeDrawImage()") //---click to add more icons for this session---
-            DragDot.style("visibility", "hidden")
-            //topG.appendChild(dragDot)
+            ImgDragArrow.style("visibility", "hidden")
+            ImgDragArrow.attr("transform", null)
             cw.drawImageFinishButton.disabled = true
             cw.drawImageBotButton.disabled = true
             cw.drawImageCancelButton.disabled = true
             cw.adjustedRotateImageValue.value = 0
-
+            cw.imgFile.value=""
+            cw.imageWidthValue.value=""
+            cw.imageHeightValue.value=""
 
             coverOff()
+
 
         }
 
@@ -380,7 +384,7 @@ function setEditImage()
 
         ActiveElem = d3.select("#activeElem")
         activeElem = document.getElementById("activeElem")
-        domActiveElemG.appendChild(dragDot) //--place drag dot on top---
+        domActiveElemG.appendChild(imgDragArrow) //--place drag dot on top---
         cw.drawImageDeleteButton.style.visibility = "visible"
         cw.drawImageEditSpan.innerHTML = "Edit Image"
 
@@ -394,9 +398,9 @@ function setEditImage()
 
         //...slocate dargdot---
         var bb=activeElem.getBBox()
-        dragDot.setAttribute("cx",bb.width)
-        dragDot.setAttribute("cy",bb.height)
-                dragDot.setAttribute("transform",activeElem.getAttribute("transform"))
+        imgDragArrow.setAttribute("x",bb.width-12.5)
+        imgDragArrow.setAttribute("y",bb.height-12.5)
+                imgDragArrow.setAttribute("transform",activeElem.getAttribute("transform"))
 
         setImageEditDrag()
 
@@ -406,7 +410,7 @@ function setImageEditDrag()
 {
 
     activeElem.removeAttribute("onmousedown")
-    DragDot.style("visibility", "visible")
+    ImgDragArrow.style("visibility", "visible")
 
     //---timeout??---
     mySVG.setAttribute("onmousedown", "startDragImage(evt)")
@@ -431,8 +435,8 @@ function finishEditImage()
 
         finishedElem.setAttribute("rotateAngle", RotateAngle)
 
-
-        dragDot.removeAttribute("transform")
+         mySVG.appendChild(imgDragArrow)
+        imgDragArrow.removeAttribute("transform")
 
         ActiveElem = null
         activeElem = null
@@ -465,7 +469,7 @@ function resetEditImage()
     activeElem = null
     DrawX.style("display", "none")
     DrawX.attr("stroke", "violet")
-    DragDot.style("visibility", "hidden")
+    ImgDragArrow.style("visibility", "hidden")
 
     cw.drawImageCopyButton.style.visibility = "hidden"
     cw.drawImageDeleteButton.style.visibility = "hidden"
@@ -488,13 +492,13 @@ function cancelEditImage()
     activeElem = null
 
     ActiveElem = null
-    //topG.appendChild(dragDot) //--place drag dot on top---
+    //topG.appendChild(imgDragArrow) //--place drag dot on top---
     closeDrawImage()
     //setEditEllipse()
 
 }
 
-//=======================delete rect==================
+//=======================delete image==================
 var ImageDeleted = false
 //---button---
 function removeCurrentDrawImage()
@@ -513,158 +517,6 @@ function removeCurrentDrawImage()
 
 }
 
-function showDrawImageStrokeBg()
-{
-    var cw = addElemImageCw
-    var stroke = cw.drawImageStrokeSelect.options[cw.drawImageStrokeSelect.selectedIndex].value
-    if(stroke!="none")
-        cw.drawImageStrokeBg.style.backgroundColor = stroke
-        else
-            cw.drawImageStrokeBg.style.backgroundColor = ""
-            if(ActiveElem)
-            ActiveImage.attr("stroke", stroke)
-
-}
-
-function drawImageStrokeSelected()
-{
-    var cw = addElemImageCw
-    var stroke = cw.drawImageStrokeSelect.options[cw.drawImageStrokeSelect.selectedIndex].value
-
-    if(ActiveElem)
-        ActiveImage.attr("stroke", stroke)
-
-}
-
-function showDrawImageFillBg()
-{
-    var cw = addElemImageCw
-    var fill = cw.drawImageFillSelect.options[cw.drawImageFillSelect.selectedIndex].value
-    if(fill!="none")
-        cw.drawImageFillBg.style.backgroundColor = fill
-        else
-            cw.drawImageFillBg.style.backgroundColor = ""
-            if(cw.drawImageFillSelect.selectedIndex==0)
-        {
-            ActiveImage.attr("fill", "white")
-            ActiveImage.attr("fill-opacity", 0)
-
-        }
-        else if(ActiveElem)
-        {
-            ActiveImage.attr("fill", fill)
-            var opacity = cw.drawImageOpacitySelect.options[cw.drawImageOpacitySelect.selectedIndex].text
-
-            ActiveImage.attr("fill-opacity", opacity)
-
-        }
-
-}
-
-function drawImageFillSelected()
-{
-    var cw = addElemImageCw
-    var fill = cw.drawImageFillSelect.options[cw.drawImageFillSelect.selectedIndex].value
-    if(cw.drawImageFillSelect.selectedIndex==0)
-    {
-        ActiveImage.attr("fill", "white")
-        ActiveImage.attr("fill-opacity", 0)
-
-    }
-    else if(ActiveElem)
-    {
-        ActiveImage.attr("fill", fill)
-        var opacity = cw.drawImageOpacitySelect.options[cw.drawImageOpacitySelect.selectedIndex].text
-
-        ActiveImage.attr("fill-opacity", opacity)
-
-    }
-
-}
-
-function drawImageOpacitySelected()
-{
-    var cw = addElemImageCw
-    var opacity = cw.drawImageOpacitySelect.options[cw.drawImageOpacitySelect.selectedIndex].text
-    if(ActiveElem)
-        ActiveImage.attr("opacity", opacity)
-
-}
-
-function drawImageStrokeWidthSelected()
-{
-    var cw = addElemImageCw
-    var strokeWidth = cw.drawImageStrokeWidthSelect.options[cw.drawImageStrokeWidthSelect.selectedIndex].text
-    if(ActiveElem)
-    {
-        ActiveImage.attr("stroke-width", strokeWidth)
-        if(cw.drawImageStrokeDashCheck.checked==true)
-        {
-            da1 = 8
-            da2 = 3
-
-            ActiveImage.attr("stroke-dasharray", da1+" "+da2)
-
-        }
-        if(cw.drawImageStrokeRoundCheck.checked==true)
-        {
-            rxy = 5*strokeWidth
-
-            ActiveImage.attr("rx", rxy)
-            ActiveImage.attr("ry", rxy)
-
-        }
-
-    }
-
-}
-
-function drawImageStrokeRoundChecked()
-{
-    var cw = addElemImageCw
-    var strokeWidth = parseFloat(cw.drawImageStrokeWidthSelect.options[cw.drawImageStrokeWidthSelect.selectedIndex].text)
-    if(ActiveElem)
-    {
-        if(cw.drawImageStrokeRoundCheck.checked==true)
-        {
-
-            ActiveImage.attr("rx", 5*strokeWidth)
-            ActiveImage.attr("ry", 5*strokeWidth)
-
-        }
-        else
-        {
-            ActiveImage.attr("rx", null)
-            ActiveImage.attr("ry", null)
-
-        }
-
-    }
-}
-
-function drawImageStrokeDashChecked()
-{
-    var cw = addElemImageCw
-    if(cw.drawImageStrokeDashCheck.checked==true)
-    {
-        if(ActiveElem)
-        {
-            var strokeWidth = parseFloat(cw.drawImageStrokeWidthSelect.options[cw.drawImageStrokeWidthSelect.selectedIndex].text)
-            da1 = 8
-            da2 = 3
-
-            ActiveImage.attr("stroke-dasharray", da1+" "+da2)
-
-        }
-
-    }
-    else
-    {
-        if(ActiveElem)
-            ActiveImage.attr("stroke-dasharray", null)
-    }
-
-}
 
 function rotateImageAdjust(factor)
 {
@@ -696,7 +548,7 @@ function topDrawImage()
 
     activeElem.id = "domActiveElemG"
     activeElem.removeAttribute("transform")
-    dragDot.removeAttribute("transform")
+    imgDragArrow.removeAttribute("transform")
 
     activeElem.removeChild(activeElem.firstChild)
 
@@ -720,7 +572,7 @@ function botDrawImage()
 
         activeElem.id = "domActiveElemG"
         activeElem.removeAttribute("transform")
-        dragDot.removeAttribute("transform")
+        imgDragArrow.removeAttribute("transform")
         domElemG.removeChild(elemObjEdit)
         activeElem.removeChild(activeElem.firstChild)
         domElemG.insertBefore(finishedElem, domElemG.firstChild)
