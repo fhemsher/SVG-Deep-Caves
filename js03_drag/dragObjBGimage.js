@@ -13,12 +13,12 @@ function startDragBGimage(evt)
 
     if(activeElem&&!DraggingObj&&addElemBGImageViz==true) //---prevents dragging conflicts on other draggable elements---
     {
-        if(evt.target.getAttribute("id")=="activeBGimage" || evt.target.getAttribute("id")=="dragDot")
+        if(evt.target.getAttribute("id")=="activeBGimage" || evt.target.getAttribute("id")=="imgDragArrow")
         {
 
             //if(evt.target.parentNode.getAttribute("class")=="dragTargetObj") //---g--
 
-          if(evt.target.getAttribute("id")=="dragDot")
+          if(evt.target.getAttribute("id")=="imgDragArrow")
                 objDragTarget = evt.target
            else if(evt.target.getAttribute("id")=="activeBGimage")
                 objDragTarget = evt.target.parentNode
@@ -61,7 +61,7 @@ function startDragBGimage(evt)
 
             DraggingObj = true
 
-            if(objDragTarget.getAttribute("id")=="dragDot")
+            if(objDragTarget.getAttribute("id")=="imgDragArrow")
             {
                     var cw = addElemBGImageCw
                 var w = +activeBGimage.getAttribute("width")
@@ -95,7 +95,7 @@ function dragBGimage(evt)
         Pnt.x -= ObjStartX;
         Pnt.y -= ObjStartY;
 
-        if(objDragTarget.getAttribute("id")=="dragDot")
+        if(objDragTarget.getAttribute("id")=="imgDragArrow")
         {
             var width = Pnt.x +parseFloat(activeBGimage.getAttribute("width"))
             var height = Pnt.y +parseFloat(activeBGimage.getAttribute("height"))
@@ -118,7 +118,7 @@ function dragBGimage(evt)
 
 
         }
-        else if (objDragTarget.getAttribute("id")!="dragDot")
+        else if (objDragTarget.getAttribute("id")!="imgDragArrow")
         {
             objTransformRequestObj.setTranslate(Pnt.x, Pnt.y)
             objTransList.appendItem(objTransformRequestObj)
@@ -127,7 +127,7 @@ function dragBGimage(evt)
 
             var transformRequest = activeElem.ownerSVGElement.createSVGTransform()
             //---attach new or existing transform to element, init its transform list---
-            var myTransListAnim = dragDot.transform
+            var myTransListAnim = imgDragArrow.transform
             var transList = myTransListAnim.baseVal
 
             transformRequest.setTranslate(Pnt.x, Pnt.y)
@@ -154,7 +154,7 @@ function endDragBGimage(evt)
 
         objDragTarget = null
         DraggingObj = false
-      
+
 
     }
 }

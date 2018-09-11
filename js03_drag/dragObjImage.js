@@ -13,7 +13,7 @@ function startDragImage(evt)
 
     if(activeElem&&!DraggingObj&&addElemImageViz==true) //---prevents dragging conflicts on other draggable elements---
     {
-        if(evt.target.getAttribute("id")=="activeElem" || evt.target.getAttribute("id")=="dragDot")
+        if(evt.target.getAttribute("id")=="activeElem" || evt.target.getAttribute("id")=="imgDragArrow")
         {
 
           if(evt.target.getAttribute("class")=="dragTargetObj")//---all other elems--
@@ -57,13 +57,13 @@ function startDragImage(evt)
 
             DraggingObj = true
 
-            if(objDragTarget.getAttribute("id")=="dragDot")
+            if(objDragTarget.getAttribute("id")=="imgDragArrow")
             {
                     var cw = addElemImageCw
                 var w = +activeElem.getAttribute("width")
                 var h = +activeElem.getAttribute("height")
-                cw.bgImageWidthValue.value = w.toFixed(0)
-                cw.bgImageHeightValue.value = h.toFixed(0)
+                cw.imageWidthValue.value = w.toFixed(0)
+                cw.imageHeightValue.value = h.toFixed(0)
 
 
             }
@@ -91,7 +91,7 @@ function dragImage(evt)
         Pnt.x -= ObjStartX;
         Pnt.y -= ObjStartY;
 
-         if(objDragTarget.getAttribute("id")=="dragDot" &&(DrawImage==true||EditImage==true))
+         if(objDragTarget.getAttribute("id")=="imgDragArrow" &&(DrawImage==true||EditImage==true))
         {
             var width = parseFloat(ActiveElem.attr("width"))
             width= (Pnt.x+width)
@@ -110,13 +110,17 @@ function dragImage(evt)
                 objTransList.appendItem(objTransformRequestObj)
                 objTransList.consolidate()
 
-                var matrix = dragDot.transform.baseVal.consolidate().matrix;
+                var matrix = imgDragArrow.transform.baseVal.consolidate().matrix;
 
                 var transX = matrix.e
                 var transY = matrix.f
 
-                dragDot.setAttribute("transform", "translate("+(transX)+" "+transY+")")
+                imgDragArrow.setAttribute("transform", "translate("+(transX)+" "+transY+")")
 
+                                    var cw = addElemImageCw
+
+                cw.imageWidthValue.value = width.toFixed(0)
+                cw.imageHeightValue.value = height.toFixed(0)
 
 
 
@@ -138,7 +142,7 @@ function dragImage(evt)
 
             var transformRequest = activeElem.ownerSVGElement.createSVGTransform()
             //---attach new or existing transform to element, init its transform list---
-            var myTransListAnim = dragDot.transform
+            var myTransListAnim = imgDragArrow.transform
             var transList = myTransListAnim.baseVal
 
             transformRequest.setTranslate(Pnt.x, Pnt.y)
