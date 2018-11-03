@@ -254,7 +254,7 @@ function zoomUpdateAddElems()
         {
         	var mapZoom=MyMap.getZoom()
     		var initZoom=parseInt(elem.getAttribute("InitZoom"),10)
-             if(myClass!="iconElem"&&myClass!="pgonElem")
+             if(myClass!="iconElem"&&myClass!="symbolElem")
     		    var scale = (Math.pow(2, mapZoom)/2)/(Math.pow(2, initZoom)/2);
              else
              {
