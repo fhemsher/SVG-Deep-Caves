@@ -479,7 +479,6 @@ function resetEditSymbol()
     cw.drawSymbolTopTable.style.backgroundColor = "honeydew"
     ActiveElem = null
     activeElem = null
-    starG.appendChild(dragDot) //--place drag dot on top---
     DrawX.style("display", "none")
     DrawX.attr("stroke", "honeydew")
     DragDot.style("visibility", "hidden")
@@ -503,7 +502,6 @@ function cancelEditSymbol()
     domActiveElemG.removeChild(document.getElementById("activeElem"))
     activeElem = null
     ActiveElem = null
-    starG.appendChild(dragDot) //--place drag dot on top---
     closeDrawSymbol()
     //setEditSymbol()
 
