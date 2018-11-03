@@ -2,13 +2,35 @@ function shadowDrawTextChecked()
 {
 
     var cw = addElemTextCw
-  if(ActiveElem)
-  {
-    if(cw.shadowDrawTextCheck.checked )
-        ActiveElem.attr('filter', "url(#drop-shadow)")
-    else
-      activeElem.removeAttribute('filter')
-  }
+    if(ActiveElem)
+    {
+        if(cw.shadowDrawTextCheck.checked)
+            ActiveElem.attr('filter', "url(#drop-shadow)")
+            else
+                activeElem.removeAttribute('filter')
+    }
+}
+function backgroundDrawTextChecked()
+{
+
+    var cw = addElemTextCw
+    if(ActiveElem)
+    {
+        if(cw.backgroundDrawTextCheck.checked)
+        {
+            ActiveElem.attr('filter', "url(#textBg)")
+            ActiveElem.attr("font-weight", "bold")
+            ActiveElem.attr("stroke", "white")
+            ActiveElem.attr("stroke-width", "1")
+
+        }
+        else
+        {
+            activeElem.removeAttribute('filter')
+            ActiveElem.attr("stroke", "none")
+            ActiveElem.attr("font-weight", null)
+        }
+    }
 }
 
 //---during drag of element add class 'noselect' to text elements---
@@ -20,7 +42,7 @@ function addNoSelectAtText()
 
         var elem = domElemG.childNodes.item(k)
 
-        if(elem.nodeName=="text")
+        if(elem.nodeName=="text"&&elem.getAttribute("class").indexOf("path")==-1&&elem.getAttribute("class")!="iconElem")
             elem.setAttribute("class", "noselect")
 
     }
@@ -33,7 +55,7 @@ function removeNoSelectAtText()
     {
 
         var elem = domElemG.childNodes.item(k)
-        if(elem.nodeName=="text")
+        if(elem.nodeName=="text"&&elem.getAttribute("class").indexOf("path")==-1&&elem.getAttribute("class")!="iconElem")
             elem.setAttribute("class", "textElem")
 
     }
@@ -113,6 +135,7 @@ function removeLastTspan()
     var lastTspan = tspans.item(tspanCnt-2) //---last tspan before blinker---
     var currentTspan = tspans.item(tspanCnt-3)
     activeText.removeChild(lastTspan)
+
     currentTspan.setAttribute("id", "activeTspan")
 
     ActiveTspan = d3.select("#activeTspan")
@@ -140,20 +163,18 @@ function startTextDraw()
 {
     activeElem = null
     ActiveElem = null
-    
+
     mySVG.setAttribute('onclick', "placeDrawText()")
     RotateAngle = 0
     TspanCnt = 0;
     TSpanON = true;
     InsertSpanON = false
     WriteText = "";
-      MyMap.scrollWheelZoom.disable();
-       MyMap.dragging.disable()
+
     DrawTextStarted = true
     DrawX.attr("stroke", "violet")
-           mySVG.setAttribute("cursor","default")
-        MyMap.scrollWheelZoom.disable();
-        MyMap.dragging.disable()
+         MyMap.scrollWheelZoom.disable();
+    MyMap.dragging.disable()
 
 }
 var textFillColor = "black"
@@ -231,28 +252,27 @@ function drawTextItalicChecked()
 var TextElem //--g child node---
 function placeDrawText()
 {
-         MyMap.scrollWheelZoom.disable();
-       MyMap.dragging.disable()
 
     var cw = addElemTextCw
 
     mySVG.removeAttribute("onclick")
     cw.drawTextWriteTextValue.value = ""
-    cw.shadowDrawTextCheck.checked=false
+    cw.shadowDrawTextCheck.checked = false
     cw.drawTextWriteTextValue.addEventListener("keypress", cw.drawTextKeyPress, false)
     cw.drawTextWriteTextValue.addEventListener("keyup", cw.drawTextKeyUp, false)
 
     var fontSize = parseInt(cw.drawTextFontSizeSelect.options[cw.drawTextFontSizeSelect.selectedIndex].text, 10)
     var fontFamily = cw.drawTextFontFamilySelect.options[cw.drawTextFontFamilySelect.selectedIndex].value
-    var textStrokeColor=cw.drawTextStrokeSelect.options[cw.drawTextStrokeSelect.selectedIndex].value
-   if(ActiveElem)
-      ActiveElem.attr('stroke', textStrokeColor)
-   if(ActiveElem && textStrokeColor!="none")
-   {         var strokeWidth = .02*fontSize
-            ActiveElem.attr('strokeWidth', strokeWidth)
+    var textStrokeColor = cw.drawTextStrokeSelect.options[cw.drawTextStrokeSelect.selectedIndex].value
+    if(ActiveElem)
+        ActiveElem.attr('stroke', textStrokeColor)
+        if(ActiveElem && textStrokeColor!="none")
+    {
+        var strokeWidth = .02*fontSize
+        ActiveElem.attr('strokeWidth', strokeWidth)
 
-   }
-    textFillColor = cw.drawTextFillSelect.options[cw.drawTextFillSelect.selectedIndex].value
+    }
+    var textFillColor = cw.drawTextFillSelect.options[cw.drawTextFillSelect.selectedIndex].value
     if(cw.drawTextBoldCheck.checked)
     {
         FontWeight = "bold"
@@ -279,38 +299,47 @@ function placeDrawText()
         if(ActiveElem)
             ActiveElem.attr('font-style', "normal")
     }
-   var textStrokeColor=cw.drawTextStrokeSelect.options[cw.drawTextStrokeSelect.selectedIndex].value
+    var textStrokeColor = cw.drawTextStrokeSelect.options[cw.drawTextStrokeSelect.selectedIndex].value
 
-   if(textStrokeColor!="none")
-    var strokeWidth = .02*fontSize
-  else
-    var strokeWidth=0
+    if(textStrokeColor!="none")
+        var strokeWidth = .02*fontSize
+        else
+            var strokeWidth = 0
 
-    ActiveElem = ActiveElemG.append("g")
-    .attr("id", "activeElem")
-    .attr("fill", textFillColor)
-    .attr("stroke", textStrokeColor)
-   .attr("stroke-width", strokeWidth)
-    .attr("font-size", fontSize)
-    .attr("font-family", fontFamily)
-    .attr("font-weight", FontWeight)
-    .attr("font-style", FontStyle)
-    .attr("transform", "translate(0 0)")
-    .attr("class", "dragTargetObj")
-     .attr("InitZoom", MapZoom)
+            ActiveElem = ActiveElemG.append("g")
+            .attr("id", "activeElem")
+            .attr("fill", textFillColor)
+            .attr("stroke", textStrokeColor)
+            .attr("stroke-width", strokeWidth)
+            .attr("font-size", fontSize)
+            .attr("font-family", fontFamily)
+            .attr("font-weight", FontWeight)
+            .attr("font-style", FontStyle)
+            .attr("transform", "translate(0 0)")
+            .attr("class", "dragTargetObj")
 
-    activeElem = document.getElementById("activeElem")
+            activeElem = document.getElementById("activeElem")
+            if(cw.shadowDrawTextCheck.checked)
+            ActiveElem.attr('filter', 'url(#drop-shadow)')
+            else if(cw.backgroundDrawTextCheck.checked)
+            {
+                ActiveElem.attr('filter', 'url(#textBg)')
+                ActiveElem.attr("font-weight", "bold")
+                ActiveElem.attr("stroke", "white")
+                ActiveElem.attr("stroke-width", "1")
 
-    TextElem = ActiveElem.append("svg:text")
-    .attr("id", "activeText")
-    .attr("x", 0)
-    .attr("y", 0)
+            }
 
-    ActiveTspan = TextElem.append("tspan")
-    .attr("id", "activeTspan")
-    activeTspan = document.getElementById("activeTspan")
-    //---blinker---!
-    var blink = "|";
+            TextElem = ActiveElem.append("svg:text")
+            .attr("id", "activeText")
+            .attr("x", 0)
+            .attr("y", 0)
+
+            ActiveTspan = TextElem.append("tspan")
+            .attr("id", "activeTspan")
+            activeTspan = document.getElementById("activeTspan")
+            //---blinker---!
+            var blink = "|";
 
     TextBlinker = TextElem.append("tspan")
     .text(blink)
@@ -344,10 +373,18 @@ function placeDrawText()
     DrawX.style("display", "inline")
     DrawX.attr("transform", ActiveElem.attr("transform"))
 
-   // cw.shadowDrawTextButton.disabled = false
+    // cw.shadowDrawTextButton.disabled = false
     cw.finishDrawTextButton.disabled = false
     cw.cancelDrawTextButton.disabled = false
-            cw.drawTextBotButton.disabled=false
+    cw.drawTextBotButton.disabled = false
+            var svgPnt = L.point(SVGx, SVGy)
+           // SymbolCenterLL = MyMap.layerPointToLatLng(svgPnt)
+            var latLng = MyMap.layerPointToLatLng(svgPnt)
+            var lat = latLng.lat
+            var lng = latLng.lng
+            ActiveElem.attr("lat", lat)
+            ActiveElem.attr("lng", lng)
+            ActiveElem.attr("InitZoom", MapZoom)
 
     DrawText = true
     cw.focusText()
@@ -391,7 +428,7 @@ function textReset()
 
     TextBlinker.attr("font-size", fontSize)
 
- showDrawTextStrokeBg()
+    showDrawTextStrokeBg()
     ActiveElem.attr("font-weight", FontWeight)
     ActiveElem.attr("font-size", fontSize)
     ActiveElem.attr("font-style", FontStyle)
@@ -415,6 +452,7 @@ function closeDrawText()
         var elemTimelinded = false
 
     }
+
     clearInterval(TextBlinkerInterval)
     ActiveElem = null
 
@@ -428,19 +466,18 @@ function closeDrawText()
     cw.finishDrawTextButton.disabled = true
     cw.cancelDrawTextButton.disabled = true
     cw.deleteDrawTextButton.style.visibility = "hidden"
-        cw.drawTextTopButton.style.visibility = "hidden"
-       // cw.drawEllipseBotButton.style.visibility = "hidden"
-            cw.drawTextBotButton.disabled=true
-
+    cw.drawTextTopButton.style.visibility = "hidden"
+    // cw.drawEllipseBotButton.style.visibility = "hidden"
+    cw.drawTextBotButton.disabled = true
 
     DrawText = false
-      cw.shadowDrawTextCheck.checked=false
+
     cw.drawTextWriteTextValue.removeEventListener("keypress", cw.drawTextKeyPress)
     cw.drawTextWriteTextValue.removeEventListener("keyup", cw.drawTextKeyUp)
 
     DrawTextStarted = false
     mySVG.removeAttribute("onmousedown")
-
+     mySVG.style.cursor="default"
     mySVG.removeAttribute("onmouseup")
     WriteText = "";
     cw.drawTextWriteTextValue.value = ""
@@ -448,7 +485,7 @@ function closeDrawText()
     cw.botTextTable.style.backgroundColor = "linen"
     cw.containerDiv.style.backgroundColor = "linen"
     cw.editTextSpan.innerHTML = "Write"
-    cw.textClickOnTD.style.visibility="visible"
+    cw.textClickOnTD.style.visibility = "visible"
 
     if(EditText==true&&TextDeleted==false)
     {
@@ -458,6 +495,8 @@ function closeDrawText()
         elemObjEdit.style.visibility = ""
         elemObjEdit.style.cursor = "default"
         EditText = false
+
+
         closeIframe("addElemText");
     }
     DrawX.attr("stroke", "violet")
@@ -466,7 +505,8 @@ function closeDrawText()
     cw.adjustedRotateTextValue.value = "0"
     removeNoSelectAtText()
     MyMap.dragging.enable()
-   MyMap.scrollWheelZoom.enable();
+    MyMap.scrollWheelZoom.enable();
+
 }
 function cancelDrawText()
 {
@@ -475,7 +515,7 @@ function cancelDrawText()
 
     cw.finishDrawTextButton.disabled = true
     cw.cancelDrawTextButton.disabled = true
-    cw.drawTextBotButton.disabled=true
+    cw.drawTextBotButton.disabled = true
     DrawText = false
     DrawX.attr("stroke", "violet")
 
@@ -497,6 +537,8 @@ function cancelDrawText()
     {
         closeDrawText()
         closeIframe("addElemText");
+        MyMap.dragging.enable()
+        MyMap.scrollWheelZoom.enable();
 
         var elemObjEdit = document.getElementById(DrawTextEditId)
         elemObjEdit.style.visibility = ""
@@ -504,8 +546,6 @@ function cancelDrawText()
 
     }
     cw.adjustedRotateTextValue.value = "0"
-    MyMap.dragging.enable()
-    MyMap.scrollWheelZoom.enable();
 
 }
 
@@ -519,47 +559,59 @@ function finishDrawText()
             {
                 var cw = addElemTextCw
                 activeElem.removeAttribute("class")
-                    var id = "text"+new Date().getTime()
-               var finishedElem = document.getElementById("activeElem").firstChild.cloneNode(true)
-                finishedElem.setAttribute("id", id)
-                finishedElem.setAttribute("font-family", ActiveElem.attr("font-family"))
-                finishedElem.setAttribute("font-size", ActiveElem.attr("font-size"))
-                finishedElem.setAttribute("font-weight", ActiveElem.attr("font-weight"))
-                finishedElem.setAttribute("font-style", ActiveElem.attr("font-style"))
-                finishedElem.setAttribute("stroke", ActiveElem.attr("stroke"))
-                finishedElem.setAttribute("stroke-width", ActiveElem.attr("stroke-width"))
-                finishedElem.setAttribute("fill", ActiveElem.attr("fill"))
-                finishedElem.setAttribute("transform", ActiveElem.attr("transform"))
-                finishedElem.setAttribute("filter", ActiveElem.attr("filter"))
 
-                finishedElem.setAttribute("onmousedown", "editTextDraw("+id+",evt)")
+                var finishedElem = ElemG.append('text')
+                var id = "text"+new Date().getTime()
+                finishedElem.attr("id", id)
+                finishedElem.attr("font-family", ActiveElem.attr("font-family"))
+                finishedElem.attr("font-size", ActiveElem.attr("font-size"))
+                finishedElem.attr("font-weight", ActiveElem.attr("font-weight"))
+                finishedElem.attr("font-style", ActiveElem.attr("font-style"))
+                finishedElem.attr("stroke", ActiveElem.attr("stroke"))
+                finishedElem.attr("stroke-width", ActiveElem.attr("stroke-width"))
+                finishedElem.attr("fill", ActiveElem.attr("fill"))
+                finishedElem.attr("transform", ActiveElem.attr("transform"))
+                finishedElem.attr("lat", ActiveElem.attr("lat"))
+                finishedElem.attr("lng", ActiveElem.attr("lng"))
+                finishedElem.attr("InitZoom", ActiveElem.attr("InitZoom"))
 
-                finishedElem.setAttribute("style","cursor:default")
 
-                finishedElem.textContent=WriteText
 
-                //---is this text rotated?---
-                var ctm = activeElem.getCTM()
-                RAD2DEG = 180 / Math.PI;
+                if(cw.shadowDrawTextCheck.checked)
+                    finishedElem.attr('filter', 'url(#drop-shadow)')
+                    else if(cw.backgroundDrawTextCheck.checked)
+                    {
+                        finishedElem.attr('filter', 'url(#textBg)')
+
+                        finishedElem.attr("font-weight", "bold")
+                        finishedElem.attr("stroke", "white")
+
+                        finishedElem.attr("stroke-width", "1")
+                    }
+                    finishedElem.attr("onmousedown", "editTextDraw("+id+",evt)")
+            finishedElem.attr("onmouseover", "myZoomLevel("+MapZoom+","+id+")")
+
+                    finishedElem.style("cursor", "default")
+                    finishedElem.style("visibility", null)
+
+                    finishedElem.text(WriteText)
+
+                    //---is this text rotated?---
+                    var ctm = activeElem.getCTM()
+                    RAD2DEG = 180 / Math.PI;
                 var rotatedDeg = Math.atan2(ctm.b, ctm.a) * RAD2DEG;
 
-                finishedElem.setAttribute("rotateAngle", rotatedDeg)
+                finishedElem.attr("rotateAngle", rotatedDeg)
 
-                finishedElem.setAttribute("class", "textElem")
+                finishedElem.attr("class", "textElem")
 
                 mySVG.setAttribute('onclick', "placeDrawText()") //---click to add more icons for this session---
+
                 DrawX.style("display", "none")
-            finishedElem.setAttribute("onmouseover", "myZoomLevel("+MapZoom+","+id+")")
-            finishedElem.setAttribute("onmouseout", "removeZoomLevel()")
-            finishedElem.setAttribute("InitZoom", MapZoom)
-            domElemG.appendChild(finishedElem)
-          setLatLng(finishedElem) //---helperFuncts.js---
-           MyMap.dragging.enable()
-           MyMap.scrollWheelZoom.enable();
 
                 cw.finishDrawTextButton.disabled = true
                 cw.cancelDrawTextButton.disabled = true
-                cw.drawTextBotButton.disabled=true
+                cw.drawTextBotButton.disabled = true
                 coverOff()
                 WriteText = "";
                 NextLine = false
@@ -603,7 +655,8 @@ function editTextDraw(elemObjEdit, evt) //--right button/mousedown on text---
     else //---firefox--
         isRightMB = evt.which == 3;
 
-    var myZoomLevel=+elemObjEdit.getAttribute("InitZoom")
+     var myZoomLevel=+elemObjEdit.getAttribute("InitZoom")
+
     if(isRightMB&&DrawText==false&&myZoomLevel==MapZoom)
     {
         EditThisText = elemObjEdit
@@ -628,12 +681,13 @@ function editTextDraw(elemObjEdit, evt) //--right button/mousedown on text---
             setEditText()
     }
 
+
 }
 //---after iframe loaded see sendSize() at addElemText.htm---
 var EditTextObj
 function setEditText()
 {
-    MyMap.dragging.disable()
+         MyMap.dragging.disable()
     MyMap.scrollWheelZoom.disable();
 
     RotateAngle = 0
@@ -641,13 +695,13 @@ function setEditText()
     cw.botTextTable.style.backgroundColor = "orange"
     cw.drawTextTopTable.style.backgroundColor = "orange"
     cw.containerDiv.style.backgroundColor = "orange"
-    cw.textClickOnTD.style.visibility="hidden"
+    cw.textClickOnTD.style.visibility = "hidden"
     cw.editTextSpan.innerHTML = "Edit This"
     mySVG.removeAttribute('onclick')
 
     var elemObjEdit = document.getElementById(DrawTextEditId)
-
     EditTextObj = elemObjEdit.cloneNode(true)
+
     EditTextObj.setAttribute("id", "activeElem")
     EditTextObj.removeAttribute("onmousedown")
     elemObjEdit.style.visibility = "hidden"
@@ -658,34 +712,38 @@ function setEditText()
     var fontWeight = elemObjEdit.getAttribute("font-weight")
     var fontStyle = elemObjEdit.getAttribute("font-style")
     var fontSize = +elemObjEdit.getAttribute("font-size")
-    var shadow = elemObjEdit.getAttribute("filter")
-    if(shadow)
-        cw.shadowDrawTextCheck.checked=true
-    else
-        cw.shadowDrawTextCheck.checked=false
+    var filter = elemObjEdit.getAttribute("filter")
+    if(filter=="url(#drop-shadow)")
+        cw.shadowDrawTextCheck.checked = true
+        else
+            cw.shadowDrawTextCheck.checked = false
+            if(filter=="url(#textBg)")
+            cw.backgroundDrawTextCheck.checked = true
+            else
+                cw.backgroundDrawTextCheck.checked = false
 
-    var strokeWidth=fontSize*.02
-    //----reset selections---
-    for(var k = 0; k<cw.drawTextFontSizeSelect.options.length; k++)
-    {
-        var size = cw.drawTextFontSizeSelect.options[k].text
-        if(size==fontSize)
-        {
-            cw.drawTextFontSizeSelect.selectedIndex = k
-            break
-        }
-    }
+                var strokeWidth = fontSize*.02
+                //----reset selections---
+                for(var k = 0; k<cw.drawTextFontSizeSelect.options.length; k++)
+            {
+                var size = cw.drawTextFontSizeSelect.options[k].text
+                if(size==fontSize)
+                {
+                    cw.drawTextFontSizeSelect.selectedIndex = k
+                    break
+                }
+            }
 
-    for(var k = 0; k<cw.drawTextFontFamilySelect.options.length; k++)
-    {
-        var family = cw.drawTextFontFamilySelect.options[k].text
-        if(family==fontFamily)
+            for(var k = 0; k<cw.drawTextFontFamilySelect.options.length; k++)
         {
-            cw.drawTextFontFamilySelect.selectedIndex = k
-            break
+            var family = cw.drawTextFontFamilySelect.options[k].text
+            if(family==fontFamily)
+            {
+                cw.drawTextFontFamilySelect.selectedIndex = k
+                break
+            }
         }
-    }
-    for(var k = 0; k<cw.drawTextFillSelect.options.length; k++)
+        for(var k = 0; k<cw.drawTextFillSelect.options.length; k++)
     {
         var fill = cw.drawTextFillSelect.options[k].value
         if(fill==textFillColor)
@@ -705,8 +763,6 @@ function setEditText()
             break
         }
     }
-
-
 
     if(fontWeight=="bold")
         cw.drawTextBoldCheck.checked = true
@@ -732,6 +788,9 @@ function setEditText()
                 .attr("transform", elemObjEdit.getAttribute("transform"))
                 .attr("filter", elemObjEdit.getAttribute("filter"))
                 .attr("class", "dragTargetObj")
+                .attr("lat", elemObjEdit.getAttribute("lat"))
+                .attr("lng", elemObjEdit.getAttribute("lng"))
+                .attr("InitZoom", elemObjEdit.getAttribute("InitZoom"))
 
                 activeElem = document.getElementById("activeElem")
 
@@ -748,10 +807,12 @@ function setEditText()
 
     ActiveTspan = TextElem.append("tspan")
     .attr("id", "activeTspan")
-    .text(elemObjEdit.textContent)
+    .text(EditTextObj.textContent)
 
-    WriteText = elemObjEdit.textContent
+    WriteText = elemObjEdit.firstChild.textContent
+
     cw.drawTextWriteTextValue.value = WriteText
+
     activeTspan = document.getElementById("activeTspan")
     //---blinker---!
     var blink = "|";
@@ -760,7 +821,7 @@ function setEditText()
     .text(blink)
     .style("visibility", "visible")
     .attr("id", "textBlinker")
-    .attr("dx", "5")
+    .attr("dx", "-.5")
     .attr("stroke", "none")
     .attr("fill", textFillColor)
     .attr("fill-opacity", 1)
@@ -784,11 +845,9 @@ function setEditText()
     cw.deleteDrawTextButton.style.visibility = "visible"
     cw.finishDrawTextButton.disabled = false
     cw.cancelDrawTextButton.disabled = false
-            cw.drawTextBotButton.disabled=false
-               cw.drawTextTopButton.style.visibility = "visible"
-        cw.drawTextBotButton.style.visibility = "visible"
-
-    cw.drawTextWriteTextValue.value = ""
+    cw.drawTextBotButton.disabled = false
+    cw.drawTextTopButton.style.visibility = "visible"
+    cw.drawTextBotButton.style.visibility = "visible"
 
     cw.drawTextWriteTextValue.addEventListener("keypress", cw.drawTextKeyPress, false)
     cw.drawTextWriteTextValue.addEventListener("keyup", cw.drawTextKeyUp, false)
@@ -799,6 +858,7 @@ function setEditText()
     DrawX.attr("transform", ActiveElem.attr("transform"))
     coverOn()
     cw.focusText()
+
 }
 
 function finishEditText()
@@ -810,6 +870,13 @@ function finishEditText()
             var cw = addElemTextCw
 
             EditThisText.setAttribute("onmousedown", "editTextDraw("+DrawTextEditId+",evt)")
+            var endScript = false
+
+            if(EditThisText.lastChild.nodeName=='tspan')
+            {
+                endScript = EditThisText.lastChild
+                EditThisText.removeChild(endScript)
+            }
 
             EditThisText.setAttribute("font-size", ActiveElem.attr("font-size"))
             EditThisText.setAttribute("stroke", ActiveElem.attr("stroke"))
@@ -820,6 +887,9 @@ function finishEditText()
             EditThisText.setAttribute("font-style", ActiveElem.attr("font-style"))
             EditThisText.setAttribute("transform", ActiveElem.attr("transform"))
             EditThisText.setAttribute("filter", ActiveElem.attr("filter"))
+            EditThisText.setAttribute("lat", ActiveElem.attr("lat"))
+            EditThisText.setAttribute("lng", ActiveElem.attr("lng"))
+            EditThisText.setAttribute("initZoom", ActiveElem.attr("initZoom"))
 
             EditThisText.textContent = WriteText
             EditThisText.style.visibility = ""
@@ -827,7 +897,12 @@ function finishEditText()
             EditThisText.setAttribute("class", "textElem")
 
             EditThisText.setAttribute("rotateAngle", RotateAngle)
-                setLatLng(EditThisText) //---helperFuncts.js---
+            if(endScript)
+            {
+                EditThisText.appendChild(endScript)
+
+            }
+
             domActiveElemG.removeChild(activeElem)
             ActiveElem = null
 
@@ -851,6 +926,9 @@ function finishEditText()
                 EditText = false
                 // updateText()
             }
+                  setLatLng(EditThisText) //---helperFuncts.js---
+        MyMap.dragging.enable()
+        MyMap.scrollWheelZoom.enable();
 
             closeIframe("addElemText")
             closeDrawText()
@@ -890,13 +968,10 @@ function removeCurrentDrawText()
 function topDrawText()
 {
 
-       finishEditText()
-      var elemObjEdit = document.getElementById(DrawTextEditId)
-
-
+    finishEditText()
+    var elemObjEdit = document.getElementById(DrawTextEditId)
 
     domElemG.appendChild(elemObjEdit)
-
 
 }
 function botDrawText()
@@ -904,21 +979,17 @@ function botDrawText()
     if(EditText)
     {
 
-          finishEditText()
+        finishEditText()
         var elemObjEdit = document.getElementById(DrawTextEditId)
-        domElemG.insertBefore(elemObjEdit,domElemG.firstChild)
+        domElemG.insertBefore(elemObjEdit, domElemG.firstChild)
 
-
-   }
-   else
-   {
+    }
+    else
+    {
         finishDrawText()
-        domElemG.insertBefore(domElemG.lastChild,domElemG.firstChild)
-   }
+        domElemG.insertBefore(domElemG.lastChild, domElemG.firstChild)
+    }
 }
-
-
-
 
 function rotateTextAdjust(factor)
 {
@@ -956,6 +1027,7 @@ function showDrawTextFillBg()
         }
 
 }
+
 function showDrawTextStrokeBg()
 {
     var cw = addElemTextCw
@@ -964,25 +1036,22 @@ function showDrawTextStrokeBg()
         cw.drawTextStrokeBg.style.backgroundColor = stroke
         else
             cw.drawTextStrokeBg.style.backgroundColor = ""
-        if(cw.drawTextStrokeSelect.selectedIndex==0)
+            if(cw.drawTextStrokeSelect.selectedIndex==0)
         {
             ActiveElem.attr("stroke", "none")
             ActiveElem.attr("stroke-width", 0)
 
         }
         else
-        if(ActiveElem)
+            if(ActiveElem)
         {
             ActiveElem.attr('stroke', stroke)
-          var fontSize = +cw.drawTextFontSizeSelect.options[cw.drawTextFontSizeSelect.selectedIndex].text
-           ActiveElem.attr('stroke-width', fontSize*.02)
-
+            var fontSize = +cw.drawTextFontSizeSelect.options[cw.drawTextFontSizeSelect.selectedIndex].text
+            ActiveElem.attr('stroke-width', fontSize*.02)
 
         }
 
 }
-
-
 
 function drawTextFillSelected()
 {
